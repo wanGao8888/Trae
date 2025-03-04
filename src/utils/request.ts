@@ -4,12 +4,12 @@ import { ElMessage } from 'element-plus'
 // 创建 axios 实例
 const service = axios.create({
   baseURL: '/api',
-  timeout: 10000
+  timeout: 10000,
 })
 
 // 请求拦截器
 service.interceptors.request.use(
-  config => {
+  (config) => {
     // 可以在这里添加 token
     const token = localStorage.getItem('token')
     if (token) {
@@ -17,14 +17,14 @@ service.interceptors.request.use(
     }
     return config
   },
-  error => {
+  (error) => {
     return Promise.reject(error)
   }
 )
 
 // 响应拦截器
 service.interceptors.response.use(
-  response => {
+  (response) => {
     const res = response.data
     if (res.code !== 200) {
       ElMessage.error(res.message || '请求失败')
@@ -32,7 +32,7 @@ service.interceptors.response.use(
     }
     return res
   },
-  error => {
+  (error) => {
     ElMessage.error(error.message || '请求失败')
     return Promise.reject(error)
   }
