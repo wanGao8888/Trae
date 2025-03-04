@@ -40,6 +40,16 @@ const router = createRouter({
       }
     },
     {
+      path: '/house-detail',
+      name: 'houseDetail',
+      component: () => import('../views/HouseDetail.vue'),
+      meta: {
+        requiresAuth: true,
+        title: '房屋详情',
+        icon: 'House'
+      }
+    },
+    {
       path: '/',
       redirect: '/login'
     }

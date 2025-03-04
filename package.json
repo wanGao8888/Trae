@@ -12,8 +12,11 @@
     "@svgdotjs/svg.js": "^3.2.4",
     "buffer": "^6.0.3",
     "element-plus": "^2.9.5",
+    "imagetracerjs": "^1.2.6",
     "path": "^0.12.7",
+    "potrace": "^2.1.8",
     "stream-browserify": "^3.0.0",
+    "vectorizer": "^0.0.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },

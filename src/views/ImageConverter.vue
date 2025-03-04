@@ -53,6 +53,7 @@ import { SVG } from '@svgdotjs/svg.js'
 const previewUrl = ref('')
 const svgContent = ref('')
 const loading = ref(false)
+
 const downloadSvg = () => {
   if (!svgContent.value) return
   
@@ -82,66 +83,97 @@ const handleFileChange = async (file: UploadFile) => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
         
-        // 限制图片尺寸，避免处理过大的图片
+        // 限制图片尺寸
         const maxSize = 800
         let width = img.width
         let height = img.height
         
         if (width > maxSize || height > maxSize) {
           const ratio = Math.min(maxSize / width, maxSize / height)
-          width *= ratio
-          height *= ratio
+          width = Math.floor(width * ratio)
+          height = Math.floor(height * ratio)
         }
         
         canvas.width = width
         canvas.height = height
         ctx.drawImage(img, 0, 0, width, height)
         
-        const draw = SVG().size(width, height)
+        // 创建SVG容器
+        const container = document.createElement('div')
+        const draw = SVG().addTo(container).size(width, height)
+        
+        // 添加背景矩形，避免透明区域显示为白色
+        draw.rect(width, height).fill('#ffffff')
+        
         const imageData = ctx.getImageData(0, 0, width, height)
         const data = imageData.data
         
-        // 增加步长，减少处理量
-        const step = Math.max(2, Math.floor(Math.min(width, height) / 200))
+        // 使用更高效的方法，并略微增加矩形尺寸以消除网格
+        const pixelSize = Math.max(2, Math.floor(Math.min(width, height) / 200))
+        const overlap = 0.5 // 重叠像素数，消除网格
         
-        // 创建背景
-        draw.rect(width, height).fill('#fff')
-        
-        // 使用分块处理方式
-        const chunkSize = 1000 // 每次处理的像素点数量
-        const pixels = []
-        
-        // 收集需要处理的像素点
-        for (let y = 0; y < height; y += step) {
-          for (let x = 0; x < width; x += step) {
-            const i = (y * width + x) * 4
-            const r = data[i]
-            const g = data[i + 1]
-            const b = data[i + 2]
-            const a = data[i + 3] / 255
-            
-            if (a > 0.1) {
-              pixels.push({
-                x,
-                y,
-                color: `rgb(${r},${g},${b})`
-              })
+        // 分块处理以避免堆栈溢出
+        const processChunk = (startY: number, endY: number) => {
+          for (let y = startY; y < endY && y < height; y += pixelSize) {
+            for (let x = 0; x < width; x += pixelSize) {
+              // 计算区域颜色平均值
+              let r = 0, g = 0, b = 0, a = 0, count = 0
+              
+              for (let py = 0; py < pixelSize && y + py < height; py++) {
+                for (let px = 0; px < pixelSize && x + px < width; px++) {
+                  const i = ((y + py) * width + (x + px)) * 4
+                  r += data[i]
+                  g += data[i + 1]
+                  b += data[i + 2]
+                  a += data[i + 3]
+                  count++
+                }
+              }
+              
+              if (count > 0) {
+                r = Math.round(r / count)
+                g = Math.round(g / count)
+                b = Math.round(b / count)
+                a = Math.round(a / count) / 255
+                
+                if (a > 0.1) { // 忽略几乎透明的像素
+                  // 增加矩形尺寸，使其略微重叠，消除网格
+                  draw.rect(pixelSize + overlap, pixelSize + overlap)
+                    .move(x - overlap/2, y - overlap/2)
+                    .fill(`rgba(${r},${g},${b},${a.toFixed(2)})`)
+                    .stroke({ width: 0 })
+                }
+              }
             }
           }
         }
         
-        // 分块处理像素点
-        for (let i = 0; i < pixels.length; i += chunkSize) {
-          const chunk = pixels.slice(i, i + chunkSize)
-          chunk.forEach(pixel => {
-            draw.rect(step, step)
-              .move(pixel.x, pixel.y)
-              .fill(pixel.color)
-          })
+        // 分块处理图像
+        const chunkSize = 50 // 每次处理50行
+        let currentY = 0
+        
+        const processNextChunk = () => {
+          const endY = Math.min(currentY + chunkSize * pixelSize, height)
+          processChunk(currentY, endY)
+          currentY = endY
+          
+          if (currentY < height) {
+            // 使用setTimeout防止堆栈溢出
+            setTimeout(processNextChunk, 0)
+          } else {
+            // 所有块处理完成，完成SVG
+            // 优化SVG输出，移除不必要的属性
+            let svgOutput = container.innerHTML
+              .replace(/stroke="none"/g, '')
+              .replace(/stroke-width="0"/g, '')
+            
+            svgContent.value = svgOutput
+            resolve(true)
+          }
         }
         
-        svgContent.value = draw.svg()
-        resolve(true)
+        // 开始处理
+        processNextChunk()
       }
     })
   } catch (error) {
@@ -150,6 +182,7 @@ const handleFileChange = async (file: UploadFile) => {
     loading.value = false
   }
 }
+
 const handleRemove = () => {
   previewUrl.value = ''
   svgContent.value = ''
