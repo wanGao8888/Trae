@@ -77,7 +77,6 @@ const handleFileChange = async (file: UploadFile) => {
   try {
     const img = new Image()
     img.src = previewUrl.value
-    
     await new Promise((resolve) => {
       img.onload = () => {
         const canvas = document.createElement('canvas')
