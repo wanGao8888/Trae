@@ -184,8 +184,8 @@ const onDrop = (e: DragEvent) => {
 
 // 生命周期钩子
 onMounted(() => {
+  window.addEventListener('scroll', checkScrollPosition, true)
   fetchPhotos()
-  window.addEventListener('scroll', checkScrollPosition)
 })
 
 onUnmounted(() => {
