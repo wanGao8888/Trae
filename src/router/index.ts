@@ -50,6 +50,16 @@ const router = createRouter({
       }
     },
     {
+      path: '/photo-wall',
+      name: 'photoWall',
+      component: () => import('../views/PhotoWall.vue'),
+      meta: {
+        requiresAuth: true,
+        title: '照片墙',
+        icon: 'Picture'
+      }
+    },
+    {
       path: '/',
       redirect: '/login'
     }
