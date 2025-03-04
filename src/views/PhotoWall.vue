@@ -189,7 +189,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', checkScrollPosition)
+  window.removeEventListener('scroll', checkScrollPosition, true)
 })
 </script>
 
