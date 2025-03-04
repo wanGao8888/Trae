@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@svgdotjs/svg.js": "^3.2.4",
+    "axios": "^1.8.1",
     "buffer": "^6.0.3",
     "element-plus": "^2.9.5",
     "imagetracerjs": "^1.2.6",
+    "mockjs": "^1.1.0",
     "path": "^0.12.7",
     "potrace": "^2.1.8",
     "stream-browserify": "^3.0.0",
@@ -26,6 +28,7 @@
     "@vue/tsconfig": "^0.7.0",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
+    "vite-plugin-mock": "^3.0.2",
     "vue-tsc": "^2.2.4"
   }
 }

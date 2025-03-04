@@ -59,20 +59,32 @@ const rules = reactive<FormRules>({
 const handleLogin = async () => {
   if (!loginFormRef.value) return
   
-  await loginFormRef.value.validate((valid) => {
+  await loginFormRef.value.validate(async (valid) => {
     if (valid) {
       loading.value = true
-      setTimeout(() => {
-        if (loginForm.username === 'admin' && loginForm.password === '123456') {
-          localStorage.setItem('token', 'mock-token')
-          localStorage.setItem('username', loginForm.username)
-          router.push('/home')  // 修改这里的跳转路径
-          ElMessage.success('登录成功')
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(loginForm)
+        })
+        const result = await response.json()
+        
+        if (result.code === 200) {
+          localStorage.setItem('token', result.data.token)
+          localStorage.setItem('username', result.data.username)
+          router.push('/home')
+          ElMessage.success(result.message)
         } else {
-          ElMessage.error('用户名或密码错误')
+          ElMessage.error(result.message)
         }
+      } catch (error) {
+        ElMessage.error('登录失败，请稍后重试')
+      } finally {
         loading.value = false
-      }, 1000)
+      }
     }
   })
 }

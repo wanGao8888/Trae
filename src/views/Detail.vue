@@ -19,8 +19,12 @@
       <el-table-column prop="date" label="创建时间" />
       <el-table-column label="操作" width="200">
         <template #default="{ row }">
-          <el-button size="small" @click="() => handleEdit(row)">编辑</el-button>
-          <el-button size="small" type="danger" @click="handleDelete(row)">删除</el-button>
+          <el-button size="small" @click="() => handleEdit(row)"
+            >编辑</el-button
+          >
+          <el-button size="small" type="danger" @click="handleDelete(row)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -32,12 +36,21 @@
       width="500px"
       @close="resetForm"
     >
-      <el-form :model="formData" :rules="rules" ref="formRef" label-width="80px">
+      <el-form
+        :model="formData"
+        :rules="rules"
+        ref="formRef"
+        label-width="80px"
+      >
         <el-form-item label="名称" prop="name">
           <el-input v-model="formData.name" placeholder="请输入名称" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          <el-select v-model="formData.status" placeholder="请选择状态" style="width: 100%">
+          <el-select
+            v-model="formData.status"
+            placeholder="请选择状态"
+            style="width: 100%"
+          >
             <el-option label="正常" value="正常" />
             <el-option label="异常" value="异常" />
           </el-select>
@@ -54,10 +67,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
+import request from '@/utils/request'
 
 interface TableRow {
   id: number
@@ -70,38 +84,40 @@ const loading = ref(false)
 const dialogVisible = ref(false)
 const dialogTitle = ref('添加数据')
 const formRef = ref<FormInstance>()
+const tableData = ref<TableRow[]>([])
+
+// 获取表格数据
+const fetchTableData = async () => {
+  loading.value = true
+  try {
+    const result = await request.get('/detail/list')
+    tableData.value = result.data
+  } catch (error) {
+    console.error(error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// 在组件挂载时获取数据
+onMounted(() => {
+  fetchTableData()
+})
 
 const formData = reactive({
   id: 0,
   name: '',
   status: '',
-  date: ''
+  date: '',
 })
 
 const rules = reactive<FormRules>({
   name: [
     { required: true, message: '请输入名称', trigger: 'blur' },
-    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' },
   ],
-  status: [
-    { required: true, message: '请选择状态', trigger: 'change' }
-  ]
+  status: [{ required: true, message: '请选择状态', trigger: 'change' }],
 })
-
-const tableData = ref<TableRow[]>([
-  {
-    id: 1,
-    name: '测试数据1',
-    status: '正常',
-    date: '2024-01-01'
-  },
-  {
-    id: 2,
-    name: '测试数据2',
-    status: '异常',
-    date: '2024-01-02'
-  }
-])
 
 const resetForm = () => {
   if (formRef.value) {
@@ -126,30 +142,32 @@ const handleEdit = (row: TableRow) => {
 
 const submitForm = async () => {
   if (!formRef.value) return
-  
+
   await formRef.value.validate((valid) => {
     if (valid) {
       const now = new Date().toISOString().split('T')[0]
-      console.log(now, 123);
-      
+      console.log(now, 123)
+
       if (formData.id === 0) {
         // 添加数据
-        const newId = Math.max(...tableData.value.map(item => item.id)) + 1
+        const newId = Math.max(...tableData.value.map((item) => item.id)) + 1
         tableData.value.push({
           id: newId,
           name: formData.name,
           status: formData.status,
-          date: now
+          date: now,
         })
         ElMessage.success('添加成功')
       } else {
         // 编辑数据
-        const index = tableData.value.findIndex(item => item.id === formData.id)
+        const index = tableData.value.findIndex(
+          (item) => item.id === formData.id
+        )
         if (index !== -1) {
           tableData.value[index] = {
             ...tableData.value[index],
             name: formData.name,
-            status: formData.status
+            status: formData.status,
           }
           ElMessage.success('修改成功')
         }
@@ -161,23 +179,21 @@ const submitForm = async () => {
 }
 
 const handleDelete = (row: TableRow) => {
-  ElMessageBox.confirm(
-    `确定要删除 ${row.name} 吗？`,
-    '警告',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(() => {
-    const index = tableData.value.findIndex(item => item.id === row.id)
-    if (index !== -1) {
-      tableData.value.splice(index, 1)
-      ElMessage.success('删除成功')
-    }
-  }).catch(() => {
-    ElMessage.info('已取消删除')
+  ElMessageBox.confirm(`确定要删除 ${row.name} 吗？`, '警告', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
   })
+    .then(() => {
+      const index = tableData.value.findIndex((item) => item.id === row.id)
+      if (index !== -1) {
+        tableData.value.splice(index, 1)
+        ElMessage.success('删除成功')
+      }
+    })
+    .catch(() => {
+      ElMessage.info('已取消删除')
+    })
 }
 </script>
 
