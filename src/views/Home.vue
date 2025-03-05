@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <search-input style="margin-bottom: 10px" />
     <el-row :gutter="20">
       <el-col :span="6">
         <el-card shadow="hover">
@@ -48,6 +49,10 @@
     </el-row>
   </div>
 </template>
+
+<script setup>
+import SearchInput from '@/components/Input/SearchInput.vue'
+</script>
 
 <style scoped>
 .home {
