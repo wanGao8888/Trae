@@ -7,70 +7,70 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/Login.vue')
+      component: () => import('@/views/Login.vue'),
     },
     {
       path: '/home',
       name: 'home',
-      component: () => import('../views/Home.vue'),
-      meta: { 
+      component: () => import('@/views/Home.vue'),
+      meta: {
         requiresAuth: true,
         title: '首页',
-        icon: 'HomeFilled'
-      }
+        icon: 'HomeFilled',
+      },
     },
     {
       path: '/detail',
       name: 'detail',
-      component: () => import('../views/Detail.vue'),
+      component: () => import('@/views/Detail.vue'),
       meta: {
         requiresAuth: true,
         title: '详情管理',
-        icon: 'Document'
-      }
+        icon: 'Document',
+      },
     },
     {
       path: '/image-converter',
       name: 'imageConverter',
-      component: () => import('../views/ImageConverter.vue'),
+      component: () => import('@/views/ImageConverter.vue'),
       meta: {
         requiresAuth: true,
         title: '图片转换',
-        icon: 'Picture'
-      }
+        icon: 'Picture',
+      },
     },
     {
       path: '/house-detail',
       name: 'houseDetail',
-      component: () => import('../views/HouseDetail.vue'),
+      component: () => import('@/views/HouseDetail.vue'),
       meta: {
         requiresAuth: true,
         title: '房屋详情',
-        icon: 'House'
-      }
+        icon: 'House',
+      },
     },
     {
       path: '/photo-wall',
       name: 'photoWall',
-      component: () => import('../views/PhotoWall.vue'),
+      component: () => import('@/views/PhotoWall.vue'),
       meta: {
         requiresAuth: true,
         title: '照片墙',
-        icon: 'Picture'
-      }
+        icon: 'Picture',
+      },
     },
     {
       path: '/',
-      redirect: '/login'
-    }
-  ]
+      redirect: '/login',
+    },
+  ],
 })
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
-  
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!token) {
       next('/login')
     } else {
