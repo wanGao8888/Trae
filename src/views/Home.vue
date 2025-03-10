@@ -1,6 +1,11 @@
 <template>
   <div class="home">
     <search-input style="margin-bottom: 10px" />
+    <Switch
+      style="margin-bottom: 10px"
+      v-model="switchValue"
+      @update:model-value="handleChange"
+    />
     <el-row :gutter="20">
       <el-col :span="6">
         <el-card shadow="hover">
@@ -51,7 +56,22 @@
 </template>
 
 <script setup>
-import SearchInput from '@/components/Input/SearchInput.vue'
+import SearchInput from '@/components/SearchInput.vue'
+import Switch from '@/components/Switch.vue'
+import { ref, watch, computed } from 'vue'
+
+const switchValue = ref(false)
+
+// watch(switchValue, (newValue) => {
+//   console.log(switchValue.value, 'switchValue', newValue)
+// })
+// const switchStatus = computed(() => {
+//   console.log('开关状态：', switchValue.value)
+//   return switchValue.value ? '开启' : '关闭'
+// })
+const handleChange = (val) => {
+  // console.log(val, 'val', switchStatus.value)
+}
 </script>
 
 <style scoped>

@@ -13,7 +13,7 @@
 
 <script setup>
 import { defineProps, defineEmits } from 'vue'
-import Icon from '../Icon/Icon.vue'
+import Icon from './Icon/Icon.vue'
 
 defineOptions({
   inheritAttrs: false,
