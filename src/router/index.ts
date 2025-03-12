@@ -60,6 +60,17 @@ const router = createRouter({
       },
     },
     {
+      path: '/tree-demo',
+      name: 'TreeDemo',
+      component: () => import('@/views/TreeDemo.vue'),
+      meta: {
+        requiresAuth: true,
+        hidden: true,
+        title: '树结构Demo',
+        icon: 'Tree',
+      },
+    },
+    {
       path: '/',
       redirect: '/login',
     },
@@ -69,6 +80,12 @@ const router = createRouter({
 // 路由守卫
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
+
+  // 检查路由是否有 hidden 属性为 true
+  if (to.meta.hidden) {
+    next('/home')
+    return
+  }
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!token) {
