@@ -1,15 +1,34 @@
 <template>
-  <div class="table-component" :style="{ width: tableWidth, height: tableHeight }">
-    <table style="width: 100%;">
+  <div
+    class="table-component"
+    :style="{ width: tableWidth, height: tableHeight }"
+  >
+    <table style="width: 100%">
       <thead>
         <tr>
-          <th v-for="header in headers" :key="header" :style="{ textAlign: headerAlign } as CSSProperties">{{ header }}</th>
+          <th
+            v-for="header in headers"
+            :key="header"
+            :style="{ textAlign: headerAlign } as CSSProperties"
+          >
+            {{ header }}
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(row, rowIndex) in currentPageData" :key="rowIndex">
-          <td v-for="(cell, cellIndex) in row" :key="cellIndex" :style="{ textAlign: bodyAlign } as CSSProperties">
-            <slot :name="`cell-${rowIndex}-${cellIndex}`" :row="row" :rowIndex="rowIndex" :cellIndex="cellIndex" :value="cell">
+          <td
+            v-for="(cell, cellIndex) in row"
+            :key="cellIndex"
+            :style="{ textAlign: bodyAlign } as CSSProperties"
+          >
+            <slot
+              :name="`cell-${rowIndex}-${cellIndex}`"
+              :row="row"
+              :rowIndex="rowIndex"
+              :cellIndex="cellIndex"
+              :value="cell"
+            >
               {{ cell }}
             </slot>
           </td>
@@ -17,7 +36,12 @@
       </tbody>
       <tfoot>
         <tr>
-          <td :colspan="headers ? headers.length : 1" :style="{ textAlign: footerAlign } as CSSProperties">{{ footer }}</td>
+          <td
+            :colspan="headers ? headers.length : 1"
+            :style="{ textAlign: footerAlign } as CSSProperties"
+          >
+            {{ footer }}
+          </td>
         </tr>
       </tfoot>
     </table>
@@ -32,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, type CSSProperties, ref, computed } from 'vue'
+import { type CSSProperties, ref, computed } from 'vue'
 import Pagination from './Pagination.vue'
 
 const props = defineProps({
@@ -43,7 +67,7 @@ const props = defineProps({
   tableHeight: { type: String, default: 'auto' },
   headerAlign: { type: String, default: 'center' },
   bodyAlign: { type: String, default: 'center' },
-  footerAlign: { type: String, default: 'right' }
+  footerAlign: { type: String, default: 'right' },
 })
 
 const currentPage = ref(1)
@@ -78,7 +102,8 @@ table {
   width: 100%;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 0;
   height: 2.5em;
