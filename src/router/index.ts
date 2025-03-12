@@ -74,16 +74,30 @@ const router = createRouter({
       path: '/',
       redirect: '/login',
     },
+    // 添加 404 路由配置
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('@/views/NotFound.vue'),
+      meta: {
+        title: '404',
+        hidden: true,
+      },
+    },
   ],
 })
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
-
-  // 检查路由是否有 hidden 属性为 true
-  if (to.meta.hidden) {
-    next('/home')
+  // 检查路由是否存在或是否为隐藏路由（排除 404 页面）
+  if (to.meta.hidden && to.name !== 'NotFound') {
+    next({
+      name: 'NotFound',
+      params: { pathMatch: to.path.substring(1).split('/') },
+      query: to.query,
+      hash: to.hash,
+    })
     return
   }
 
