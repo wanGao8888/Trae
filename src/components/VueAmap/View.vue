@@ -9,7 +9,7 @@
 
 <script setup>
 const defaultZoom = 14
-const defaultCenter = [121.62454, 29.860258]
+const defaultCenter = [121.544914, 29.841356]
 </script>
 
 <style scoped>
