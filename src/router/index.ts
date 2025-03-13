@@ -17,6 +17,7 @@ const router = createRouter({
         requiresAuth: true,
         title: '首页',
         icon: 'HomeFilled',
+        iconCode: 'e867',
       },
     },
     {
@@ -27,6 +28,7 @@ const router = createRouter({
         requiresAuth: true,
         title: '详情管理',
         icon: 'Document',
+        iconCode: 'e673',
       },
     },
     {
@@ -37,6 +39,7 @@ const router = createRouter({
         requiresAuth: true,
         title: '图片转换',
         icon: 'Picture',
+        iconCode: 'e6ec',
       },
     },
     {
@@ -47,6 +50,7 @@ const router = createRouter({
         requiresAuth: true,
         title: '房屋详情',
         icon: 'House',
+        iconCode: 'e639',
       },
     },
     {
@@ -57,6 +61,7 @@ const router = createRouter({
         requiresAuth: true,
         title: '照片墙',
         icon: 'Picture',
+        iconCode: 'e600',
       },
     },
     {
@@ -68,6 +73,7 @@ const router = createRouter({
         hidden: true,
         title: '树结构Demo',
         icon: 'Tree',
+        iconCode: 'e867',
       },
     },
     {

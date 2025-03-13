@@ -1,5 +1,10 @@
 <template>
-  <svg :viewBox="iconItem.viewBox" :aria-label="code" class="icon" v-bind="otherProps">
+  <svg
+    :viewBox="iconItem.viewBox"
+    :aria-label="code"
+    class="icon"
+    v-bind="otherProps"
+  >
     <path
       v-for="(path, index) in iconItem.list"
       :key="index"
