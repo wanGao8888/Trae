@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@svgdotjs/svg.js": "^3.2.4",
+    "@vuemap/vue-amap": "^2.1.9",
     "axios": "^1.8.1",
     "buffer": "^6.0.3",
     "element-plus": "^2.9.5",

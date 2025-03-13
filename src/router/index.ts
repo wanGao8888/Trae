@@ -77,6 +77,17 @@ const router = createRouter({
       },
     },
     {
+      path: '/map',
+      name: 'MapPage',
+      component: () => import('@/views/MapPage.vue'),
+      meta: {
+        requiresAuth: true,
+        title: '地图页面',
+        icon: 'Location',
+        iconCode: 'e67e',
+      },
+    },
+    {
       path: '/',
       redirect: '/login',
     },

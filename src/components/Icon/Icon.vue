@@ -46,6 +46,7 @@ const iconItem = computed(() => {
   return {
     viewBox: item.viewBox,
     list: item.paths,
+    fill: item.fill,
   }
 })
 </script>
