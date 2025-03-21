@@ -10,13 +10,20 @@
         placeholder="请选择时间"
       />
       <span class="time-icon">
-        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+        <svg
+          viewBox="0 0 24 24"
+          width="16"
+          height="16"
+          stroke="currentColor"
+          stroke-width="2"
+          fill="none"
+        >
           <circle cx="12" cy="12" r="10" />
           <path d="M12 6v6l4 2" />
         </svg>
       </span>
     </div>
-    
+
     <Transition name="fade">
       <div v-if="showTimeSelect" class="time-select-panel">
         <div class="time-columns">
@@ -74,7 +81,7 @@ const showTimeSelect = ref(false)
 const selectedHour = ref(0)
 const selectedMinute = ref(0)
 
-// 初始化选中的时分
+// 初始化时间值
 watch(() => props.modelValue, (newValue) => {
   if (newValue) {
     const [hours, minutes] = newValue.split(':')
@@ -83,34 +90,34 @@ watch(() => props.modelValue, (newValue) => {
   }
 }, { immediate: true })
 
+const toggleTimeSelect = () => {
+  showTimeSelect.value = !showTimeSelect.value
+  emit('toggle-time-select', showTimeSelect.value)
+}
+
 const selectHour = (hour: number) => {
   selectedHour.value = hour
-  updateTime()
 }
 
 const selectMinute = (minute: number) => {
   selectedMinute.value = minute
-  updateTime()
 }
 
 const confirmTimeSelect = () => {
+  const time = `${String(selectedHour.value).padStart(2, '0')}:${String(selectedMinute.value).padStart(2, '0')}`
+  emit('update:modelValue', time)
   showTimeSelect.value = false
   emit('toggle-time-select', false)
 }
 
 const cancelTimeSelect = () => {
+  if (props.modelValue) {
+    const [hours, minutes] = props.modelValue.split(':')
+    selectedHour.value = parseInt(hours)
+    selectedMinute.value = parseInt(minutes)
+  }
   showTimeSelect.value = false
   emit('toggle-time-select', false)
-}
-
-const updateTime = () => {
-  const time = `${String(selectedHour.value).padStart(2, '0')}:${String(selectedMinute.value).padStart(2, '0')}`
-  emit('update:modelValue', time)
-}
-
-const toggleTimeSelect = () => {
-  showTimeSelect.value = !showTimeSelect.value
-  emit('toggle-time-select', showTimeSelect.value)
 }
 </script>
 
@@ -118,7 +125,7 @@ const toggleTimeSelect = () => {
 .time-picker {
   padding: 12px;
   border-top: 1px solid #e4e7ed;
-  position: relative;  /* 添加相对定位 */
+  position: relative; /* 添加相对定位 */
 }
 
 .time-label {
@@ -244,8 +251,8 @@ const toggleTimeSelect = () => {
 }
 
 .time-column {
-  width: 80px;  /* 设置固定宽度 */
-  flex: none;   /* 防止伸缩 */
+  width: 80px; /* 设置固定宽度 */
+  flex: none; /* 防止伸缩 */
 }
 
 .time-column-label {

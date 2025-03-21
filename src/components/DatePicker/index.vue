@@ -106,12 +106,55 @@ const emit = defineEmits<{
   (e: 'change', value: Date): void
 }>()
 
+// 在 ref 变量声明处添加临时日期变量
 const showPanel = ref(false)
 const currentDate = ref(dayjs())
+const tempSelectedDate = ref<dayjs.Dayjs | null>(null) // 新增：临时选中的日期
 const selectedDate = computed({
   get: () => (props.modelValue ? dayjs(props.modelValue as Date) : null),
   set: (value) => emit('update:modelValue', value?.toDate()),
 })
+
+// 修改 selectDate 方法
+const selectDate = (date: dayjs.Dayjs) => {
+  tempSelectedDate.value = date // 只更新临时选中的日期
+  if (!props.showTime) {
+    confirmSelect() // 如果不显示时间选择器，则直接确认
+  }
+}
+
+// 修改 confirmSelect 方法
+const confirmSelect = () => {
+  if (tempSelectedDate.value) {
+    if (props.showTime) {
+      const [hours, minutes] = selectedTime.value.split(':')
+      const finalDate = tempSelectedDate.value
+        .hour(parseInt(hours))
+        .minute(parseInt(minutes))
+      selectedDate.value = finalDate
+      emit('change', finalDate.toDate())
+    } else {
+      selectedDate.value = tempSelectedDate.value
+      emit('change', tempSelectedDate.value.toDate())
+    }
+  }
+  showPanel.value = false
+  tempSelectedDate.value = null
+}
+
+// 修改 isSelected 方法
+const isSelected = (date: dayjs.Dayjs) => {
+  return (
+    tempSelectedDate.value?.isSame(date, 'day') ||
+    (!tempSelectedDate.value && selectedDate.value?.isSame(date, 'day'))
+  )
+}
+
+// 添加取消方法
+const cancelSelect = () => {
+  showPanel.value = false
+  tempSelectedDate.value = null // 清空临时选中的日期
+}
 const selectedTime = ref('00:00')
 
 const currentYear = computed(() => currentDate.value.year())
@@ -185,13 +228,6 @@ const selectMonth = (month: number) => {
   }
 }
 
-const selectDate = (date: dayjs.Dayjs) => {
-  selectedDate.value = date
-  if (!props.showTime) {
-    showPanel.value = false
-  }
-}
-
 const handleTimeChange = (time: string) => {
   selectedTime.value = time
   if (selectedDate.value) {
@@ -200,15 +236,6 @@ const handleTimeChange = (time: string) => {
       .hour(parseInt(hours))
       .minute(parseInt(minutes))
   }
-}
-
-const confirmSelect = () => {
-  emit('change', selectedDate.value?.toDate())
-  showPanel.value = false
-}
-
-const isSelected = (date: dayjs.Dayjs) => {
-  return selectedDate.value?.isSame(date, 'day')
 }
 
 const isToday = (date: dayjs.Dayjs) => {
