@@ -203,6 +203,9 @@ const calendarDays = computed(() => {
 
 // 方法
 const togglePanel = () => {
+  if (!showPanel.value) {
+    showTimeSelect.value = false // 重置时间选择面板状态
+  }
   showPanel.value = !showPanel.value
 }
 
