@@ -13,7 +13,6 @@
       format="YYYY-MM-DD HH:mm"
       :show-time="true"
       placeholder="请选择日期时间"
-      :disabled-date="disabledDate"
       @change="handleDateChange"
     />
     <el-row :gutter="20">
@@ -75,10 +74,6 @@ const selectedDate = ref(new Date()) // 设置默认值为当前日期
 
 const handleDateChange = (value) => {
   console.log('选择的日期：', value)
-}
-
-const disabledDate = (date) => {
-  return date < new Date()
 }
 
 const switchValue = ref(false)

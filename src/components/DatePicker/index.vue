@@ -249,7 +249,8 @@ const isDisabled = (date: dayjs.Dayjs) => {
   if (props.disabledDate) {
     return props.disabledDate(date.toDate())
   }
-  return false
+  // 默认禁用今天之前的日期（包括今天）
+  return date.isBefore(dayjs().startOf('day'))
 }
 
 const formatDate = (date: dayjs.Dayjs | null) => {
