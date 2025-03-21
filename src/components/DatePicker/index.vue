@@ -397,6 +397,10 @@ const handleTimeSelectToggle = (show: boolean) => {
   font-weight: bold;
 }
 
+.today.selected {
+  color: white;
+}
+
 .disabled {
   color: #c0c4cc;
   cursor: not-allowed;
