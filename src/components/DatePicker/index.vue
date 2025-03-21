@@ -66,6 +66,7 @@
         <TimePanel
           v-if="showTime"
           v-model="selectedTime"
+          :initial-time="selectedTime"
           @update:modelValue="handleTimeChange"
           @toggle-time-select="handleTimeSelectToggle"
         />
@@ -80,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import dayjs from 'dayjs'
 import YearMonthPanel from './YearMonthPanel.vue'
 import TimePanel from './TimePanel.vue'
@@ -156,6 +157,20 @@ const cancelSelect = () => {
   tempSelectedDate.value = null // 清空临时选中的日期
 }
 const selectedTime = ref('00:00')
+
+// 添加 watch 来监听初始值
+// 修改 watch
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (newValue) {
+      const date = dayjs(newValue as Date)
+      const timeStr = date.format('HH:mm')
+      selectedTime.value = timeStr
+    }
+  },
+  { immediate: true }
+)
 
 const currentYear = computed(() => currentDate.value.year())
 const currentMonth = computed(() => currentDate.value.month())

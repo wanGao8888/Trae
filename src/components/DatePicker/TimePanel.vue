@@ -87,12 +87,41 @@ watch(() => props.modelValue, (newValue) => {
     const [hours, minutes] = newValue.split(':')
     selectedHour.value = parseInt(hours)
     selectedMinute.value = parseInt(minutes)
+    // 添加延时以确保 DOM 更新后再滚动
+    setTimeout(() => {
+      scrollToSelected()
+    }, 0)
   }
 }, { immediate: true })
 
+// 修改滚动方法
+const scrollToSelected = () => {
+  const hourEl = document.querySelector('.time-column-content .time-item.active') as HTMLElement
+  const minuteEl = document.querySelectorAll('.time-column-content .time-item.active')[1] as HTMLElement
+  
+  if (hourEl) {
+    hourEl.parentElement?.scrollTo({
+      top: hourEl.offsetTop - 80
+    })
+  }
+  
+  if (minuteEl) {
+    minuteEl.parentElement?.scrollTo({
+      top: minuteEl.offsetTop - 80
+    })
+  }
+}
+
+// 修改 toggleTimeSelect 方法
 const toggleTimeSelect = () => {
   showTimeSelect.value = !showTimeSelect.value
   emit('toggle-time-select', showTimeSelect.value)
+  if (showTimeSelect.value) {
+    // 打开面板时滚动到选中位置
+    setTimeout(() => {
+      scrollToSelected()
+    }, 0)
+  }
 }
 
 const selectHour = (hour: number) => {
