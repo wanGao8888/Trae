@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 
 const props = defineProps<{
   modelValue: string
@@ -87,10 +87,9 @@ watch(() => props.modelValue, (newValue) => {
     const [hours, minutes] = newValue.split(':')
     selectedHour.value = parseInt(hours)
     selectedMinute.value = parseInt(minutes)
-    // 添加延时以确保 DOM 更新后再滚动
-    setTimeout(() => {
+    nextTick(() => {
       scrollToSelected()
-    }, 0)
+    })
   }
 }, { immediate: true })
 
@@ -117,10 +116,9 @@ const toggleTimeSelect = () => {
   showTimeSelect.value = !showTimeSelect.value
   emit('toggle-time-select', showTimeSelect.value)
   if (showTimeSelect.value) {
-    // 打开面板时滚动到选中位置
-    setTimeout(() => {
+    nextTick(() => {
       scrollToSelected()
-    }, 0)
+    })
   }
 }
 
