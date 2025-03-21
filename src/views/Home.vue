@@ -6,14 +6,18 @@
       v-model="switchValue"
       @update:model-value="handleChange"
     />
-    <DatePicker
-      style="margin-bottom: 10px"
-      v-model="date"
-      type="date"
-      placeholder="选择日期"
-      :disabled-before-today="false"
-      @change="handleDateChange"
-    />
+    <!-- 修改日期选择器的使用 -->
+    <div style="width: 300px; margin-bottom: 20px">
+      <CustomDatePicker
+        v-model="selectedDate"
+        type="datetime"
+        format="YYYY-MM-DD HH:mm"
+        :show-time="true"
+        placeholder="请选择日期时间"
+        :disabled-date="disabledDate"
+        @change="handleDateChange"
+      />
+    </div>
     <el-row :gutter="20">
       <el-col :span="6">
         <el-card shadow="hover">
@@ -67,9 +71,17 @@
 import SearchInput from '@/components/SearchInput.vue'
 import Switch from '@/components/Switch.vue'
 import { ref, watch, computed } from 'vue'
-import DatePicker from '@/components/DatePicker.vue'
+import CustomDatePicker from '@/components/DatePicker/index.vue'
 
-const date = ref('')
+const selectedDate = ref(new Date()) // 设置默认值为当前日期
+
+const handleDateChange = (value) => {
+  console.log('选择的日期：', value)
+}
+
+const disabledDate = (date) => {
+  return date < new Date()
+}
 
 const switchValue = ref(false)
 
@@ -82,10 +94,6 @@ const switchValue = ref(false)
 // })
 const handleChange = (val) => {
   // console.log(val, 'val', switchStatus.value)
-}
-
-const handleDateChange = (value) => {
-  console.log('选择的日期：', value)
 }
 </script>
 

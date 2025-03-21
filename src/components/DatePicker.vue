@@ -12,6 +12,7 @@
       :disabled-date="disabledDate"
       :size="size"
       :style="{ width }"
+      :first-day-of-week="1"
       @change="handleChange"
     >
       <template #default="cell">
@@ -28,6 +29,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'  // 添加中文语言包
+
+// 设置 dayjs 为中文
+dayjs.locale('zh-cn')
 
 interface Props {
   modelValue?: string | number | Date
@@ -141,5 +146,22 @@ const handleChange = (value: any) => {
 :deep(.el-picker-panel__shortcut) {
   color: var(--el-color-primary);
   font-size: 13px;
+}
+
+:deep(.el-date-picker__header-label),
+:deep(.el-date-picker__week-list) {
+  font-size: 14px;
+}
+
+:deep(.el-picker-panel) {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif !important;
+}
+
+:deep(.el-date-picker__header),
+:deep(.el-date-table thead),
+:deep(.el-date-table tbody),
+:deep(.el-picker-panel__shortcut),
+:deep(.el-date-picker__header-label) {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif !important;
 }
 </style>

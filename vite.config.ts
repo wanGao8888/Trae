@@ -11,7 +11,7 @@ export default defineConfig({
     }),
   ],
   server: {
-    port: 3000,
+    port: 3003,
     open: true,
     cors: true,
     proxy: {
