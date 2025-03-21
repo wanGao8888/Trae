@@ -6,18 +6,16 @@
       v-model="switchValue"
       @update:model-value="handleChange"
     />
-    <!-- 修改日期选择器的使用 -->
-    <div style="width: 300px; margin-bottom: 20px">
-      <CustomDatePicker
-        v-model="selectedDate"
-        type="datetime"
-        format="YYYY-MM-DD HH:mm"
-        :show-time="true"
-        placeholder="请选择日期时间"
-        :disabled-date="disabledDate"
-        @change="handleDateChange"
-      />
-    </div>
+    <CustomDatePicker
+      style="margin-bottom: 20px"
+      v-model="selectedDate"
+      type="datetime"
+      format="YYYY-MM-DD HH:mm"
+      :show-time="true"
+      placeholder="请选择日期时间"
+      :disabled-date="disabledDate"
+      @change="handleDateChange"
+    />
     <el-row :gutter="20">
       <el-col :span="6">
         <el-card shadow="hover">

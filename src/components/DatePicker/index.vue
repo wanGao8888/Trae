@@ -296,7 +296,7 @@ const handleTimeSelectToggle = (show: boolean) => {
 <style scoped>
 .date-picker {
   position: relative;
-  width: 100%;
+  width: fit-content;
 }
 
 .date-input {
