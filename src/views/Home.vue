@@ -6,6 +6,14 @@
       v-model="switchValue"
       @update:model-value="handleChange"
     />
+    <DatePicker
+      style="margin-bottom: 10px"
+      v-model="date"
+      type="date"
+      placeholder="选择日期"
+      :disabled-before-today="false"
+      @change="handleDateChange"
+    />
     <el-row :gutter="20">
       <el-col :span="6">
         <el-card shadow="hover">
@@ -59,6 +67,9 @@
 import SearchInput from '@/components/SearchInput.vue'
 import Switch from '@/components/Switch.vue'
 import { ref, watch, computed } from 'vue'
+import DatePicker from '@/components/DatePicker.vue'
+
+const date = ref('')
 
 const switchValue = ref(false)
 
@@ -71,6 +82,10 @@ const switchValue = ref(false)
 // })
 const handleChange = (val) => {
   // console.log(val, 'val', switchStatus.value)
+}
+
+const handleDateChange = (value) => {
+  console.log('选择的日期：', value)
 }
 </script>
 
