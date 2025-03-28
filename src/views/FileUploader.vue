@@ -24,9 +24,10 @@ const handleFileChange = (files: File[]) => {
   console.log('选择的文件：', files)
 }
 
-const exportDeliveryNote = () => {
-  // 创建工作簿
-  const wb = XLSX.utils.book_new()
+const exportDeliveryNote = async () => {
+  try {
+    // 创建工作簿
+    const wb = XLSX.utils.book_new()
 
   // 准备数据
   const data = [
@@ -227,18 +228,31 @@ const exportDeliveryNote = () => {
   }
 
   // Add worksheet to workbook
-  XLSX.utils.book_append_sheet(wb, ws, '送货单')
+  const timestamp = new Date().getTime()
+  const sheetName = `送货单_${timestamp}`
+  XLSX.utils.book_append_sheet(wb, ws, sheetName)
 
-  // 导出文件
-  const wopts = {
+  // 修改导出部分
+  const wopts: XLSX.WritingOptions = {
     bookType: 'xlsx',
-    type: 'array',
+    type: 'array' as const,
     cellStyles: true,
   }
 
+  // 直接使用 XLSX.write 而不是 Promise 包装
   const wbout = XLSX.write(wb, wopts)
-  const blob = new Blob([wbout], { type: 'application/octet-stream' })
-  FileSaver.saveAs(blob, `送货单_${new Date().toLocaleDateString()}.xlsx`)
+
+  const blob = new Blob([wbout], { 
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  })
+  
+  // 导出文件名也添加时间戳
+  const fileName = `送货单_${timestamp}.xlsx`
+  FileSaver.saveAs(blob, fileName)
+  } catch (error) {
+    console.error('导出送货单失败:', error)
+    // 这里可以添加错误提示
+  }
 }
 </script>
 
