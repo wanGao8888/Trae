@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-// 首先在路由配置中添加 title 和 icon 信息
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -85,6 +84,17 @@ const router = createRouter({
         title: '地图页面',
         icon: 'Location',
         iconCode: 'e67e',
+      },
+    },
+    {
+      path: '/file-uploader',
+      name: 'fileUploader',
+      component: () => import('@/views/FileUploader.vue'),
+      meta: {
+        requiresAuth: true,
+        title: '文件上传',
+        icon: 'Upload',
+        iconCode: 'e60d',
       },
     },
     {
