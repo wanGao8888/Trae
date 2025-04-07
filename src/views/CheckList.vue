@@ -73,13 +73,20 @@
         <tr v-for="(item, index) in checkItems" :key="index">
           <td class="area-col">
             {{ item.category }}
-            <div v-if="item.category === '注塑机' || item.category === '组装机'" class="batch-note">
+            <div
+              v-if="item.category === '注塑机' || item.category === '组装机'"
+              class="batch-note"
+            >
               本次的批号为 XX, XX, XX, XX
             </div>
           </td>
           <td class="content-col">
             <div class="check-items-wrapper">
-              <div v-for="(subItem, subIndex) in item.items" :key="subIndex" class="check-item">
+              <div
+                v-for="(subItem, subIndex) in item.items"
+                :key="subIndex"
+                class="check-item"
+              >
                 {{ subItem.name }} □
               </div>
             </div>
@@ -213,6 +220,18 @@ const exportCheckList = () => {
 </script>
 
 <style scoped>
+.check-list {
+  padding: 20px;
+  background: white;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* 表格相关样式 */
 .clearance-table {
   width: 100%;
   border-collapse: collapse;
@@ -234,6 +253,7 @@ const exportCheckList = () => {
   font-weight: normal;
 }
 
+/* 列宽度设置 */
 .area-col {
   width: 120px;
   background-color: #f5f7fa;
@@ -249,45 +269,7 @@ const exportCheckList = () => {
   width: 100px;
 }
 
-.check-items-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: left;
-}
-
-.check-item {
-  white-space: nowrap;
-  padding: 2px 8px;
-}
-
-.batch-note {
-  font-size: 12px;
-  color: #666;
-  margin-top: 8px;
-}
-
-.sub-header {
-  font-size: 12px;
-  color: #666;
-  margin-top: 4px;
-}
-</style>
-
-<style scoped>
-.check-list {
-  padding: 20px;
-  background: white;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
+/* 日期和时间相关 */
 .date-row {
   height: 100%;
   display: flex;
@@ -304,6 +286,24 @@ const exportCheckList = () => {
   padding: 0 12px;
 }
 
+/* 检查项目相关 */
+.check-items-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: left;
+}
+
+.check-item {
+  white-space: nowrap;
+  padding: 2px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .check-items-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -311,16 +311,13 @@ const exportCheckList = () => {
   padding: 8px;
 }
 
-.check-item {
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-}
-
+/* 单元格样式 */
 .area-cell {
   padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .status-cell {
@@ -329,6 +326,9 @@ const exportCheckList = () => {
   flex-direction: column;
   gap: 8px;
   color: #666;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .operator-cell,
@@ -338,44 +338,11 @@ const exportCheckList = () => {
   color: #666;
 }
 
-.checkbox {
-  margin-left: 4px;
-}
-
-.right-section {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.right-table {
-  width: 100%;
-  height: 100%;
-  border-collapse: collapse;
-}
-
-.right-cell {
-  padding: 0;
-  border: 1px solid #ebeef5;
-}
-
-.inner-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.label-cell {
-  width: 100px;
-  padding: 8px;
-  border-right: 1px solid #ebeef5;
-  color: #606266;
-  vertical-align: middle;
-  background-color: #f5f7fa;
-}
-
-.input-cell {
-  padding: 8px;
-  vertical-align: middle;
+/* 其他样式 */
+.batch-note {
+  font-size: 12px;
+  color: #666;
+  margin-top: 8px;
 }
 
 .sub-header {
@@ -390,11 +357,15 @@ const exportCheckList = () => {
   color: #666;
 }
 
+.checkbox {
+  margin-left: 4px;
+}
+
+/* Element Plus 组件样式覆盖 */
 :deep(.el-checkbox) {
   margin-right: 15px;
 }
 
-/* 描述列表样式调整 */
 :deep(.el-descriptions) {
   --el-descriptions-table-border: 1px solid #ebeef5;
   width: 100%;
@@ -431,13 +402,16 @@ const exportCheckList = () => {
   margin-top: -1px;
 }
 
-/* 清场区域表格特殊处理 */
 :deep(.el-descriptions__cell.is-bordered-content) {
   padding: 0 !important;
 }
 
-/* 调整嵌套描述列表样式 */
+/* 右侧区域样式 */
 .right-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
   :deep(.el-descriptions) {
     margin: 0;
   }
@@ -452,40 +426,7 @@ const exportCheckList = () => {
   }
 }
 
-/* 调整清场类型行样式 */
-:deep(.el-descriptions__row) {
-  display: flex;
-  align-items: stretch;
-}
-
-/* 调整底部信息样式 */
-:deep(.el-descriptions__content .result-content) {
-  width: 100%;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-}
-
-/* 调整复选框容器样式 */
-.area-cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-/* 调整网格布局样式 */
-.check-items-grid {
-  width: 100%;
-  padding: 12px;
-}
-
-/* 调整状态单元格样式 */
-.status-cell {
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
+/* 区域标题样式 */
 .area-header {
   display: flex;
   width: 100%;
@@ -519,12 +460,7 @@ const exportCheckList = () => {
   border-right: none;
 }
 
-/* 调整描述列表的标题样式 */
-:deep(.el-descriptions__title) {
-  margin: 0;
-  padding: 0;
-}
-
+:deep(.el-descriptions__title),
 :deep(.el-descriptions__header) {
   margin: 0;
   padding: 0;
