@@ -111,6 +111,16 @@ const router = createRouter({
         hidden: true,
       },
     },
+    {
+      path: '/check-list',
+      name: 'CheckList',
+      component: () => import('@/views/CheckList.vue'),
+      meta: {
+        requiresAuth: true,
+        title: '清单管理',
+        icon: 'List',
+      },
+    },
   ],
 })
 

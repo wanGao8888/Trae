@@ -228,27 +228,27 @@ const exportDeliveryNote = async () => {
   }
 
   // Add worksheet to workbook
-  const timestamp = new Date().getTime()
-  const sheetName = `送货单_${timestamp}`
-  XLSX.utils.book_append_sheet(wb, ws, sheetName)
+  XLSX.utils.book_append_sheet(wb, ws, '送货单')
 
   // 修改导出部分
   const wopts: XLSX.WritingOptions = {
     bookType: 'xlsx',
-    type: 'array' as const,
+    type: 'array' as const,  // 明确指定类型
     cellStyles: true,
+    compression: true,
   }
 
-  // 直接使用 XLSX.write 而不是 Promise 包装
-  const wbout = XLSX.write(wb, wopts)
+  // 使用 Promise 包装写入操作
+  const wbout = await new Promise<Uint8Array>((resolve) => {
+    const result = XLSX.write(wb, wopts)
+    resolve(result)
+  })
 
   const blob = new Blob([wbout], { 
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   })
   
-  // 导出文件名也添加时间戳
-  const fileName = `送货单_${timestamp}.xlsx`
-  FileSaver.saveAs(blob, fileName)
+  FileSaver.saveAs(blob, `送货单_${new Date().toLocaleDateString()}.xlsx`)
   } catch (error) {
     console.error('导出送货单失败:', error)
     // 这里可以添加错误提示
