@@ -94,7 +94,7 @@ const router = createRouter({
         requiresAuth: true,
         title: '文件上传',
         icon: 'Upload',
-        iconCode: 'e60d',
+        iconCode: 'e609',
       },
     },
     {
@@ -119,6 +119,7 @@ const router = createRouter({
         requiresAuth: true,
         title: '清单管理',
         icon: 'List',
+        iconCode: 'e627',
       },
     },
   ],
