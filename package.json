@@ -15,6 +15,7 @@
     "element-plus": "^2.9.5",
     "file-saver": "^2.0.5",
     "imagetracerjs": "^1.2.6",
+    "lunar-javascript": "^1.7.2",
     "mockjs": "^1.1.0",
     "path": "^0.12.7",
     "potrace": "^2.1.8",

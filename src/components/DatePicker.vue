@@ -29,10 +29,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import dayjs from 'dayjs'
-import 'dayjs/locale/zh-cn'  // 添加中文语言包
-
-// 设置 dayjs 为中文
-dayjs.locale('zh-cn')
 
 interface Props {
   modelValue?: string | number | Date
@@ -58,7 +54,7 @@ const props = withDefaults(defineProps<Props>(), {
   enableShortcuts: true,
   size: 'default',
   width: '220px',
-  disabledBeforeToday: false
+  disabledBeforeToday: false,
 })
 
 const emit = defineEmits<{
@@ -68,14 +64,14 @@ const emit = defineEmits<{
 
 const dateValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  set: (value) => emit('update:modelValue', value),
 })
 
 // 快捷选项
 const defaultShortcuts = [
   {
     text: '今天',
-    value: new Date()
+    value: new Date(),
   },
   {
     text: '昨天',
@@ -83,7 +79,7 @@ const defaultShortcuts = [
       const date = new Date()
       date.setTime(date.getTime() - 3600 * 1000 * 24)
       return date
-    }
+    },
   },
   {
     text: '一周前',
@@ -91,7 +87,7 @@ const defaultShortcuts = [
       const date = new Date()
       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
       return date
-    }
+    },
   },
   {
     text: '一个月前',
@@ -99,8 +95,8 @@ const defaultShortcuts = [
       const date = new Date()
       date.setMonth(date.getMonth() - 1)
       return date
-    }
-  }
+    },
+  },
 ]
 
 // 禁用日期
@@ -154,7 +150,8 @@ const handleChange = (value: any) => {
 }
 
 :deep(.el-picker-panel) {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
 }
 
 :deep(.el-date-picker__header),
@@ -162,6 +159,7 @@ const handleChange = (value: any) => {
 :deep(.el-date-table tbody),
 :deep(.el-picker-panel__shortcut),
 :deep(.el-date-picker__header-label) {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
 }
 </style>

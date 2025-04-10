@@ -55,10 +55,14 @@
                 selected: isSelected(day.date),
                 today: isToday(day.date),
                 disabled: isDisabled(day.date),
+                'has-holiday': day.holiday,
               }"
               @click="!isDisabled(day.date) && selectDate(day.date)"
             >
-              {{ day.dayOfMonth }}
+              <span class="day-number">{{ day.dayOfMonth }}</span>
+              <span v-if="day.holiday" class="holiday-name">{{
+                day.holiday
+              }}</span>
             </div>
           </div>
         </div>
@@ -85,6 +89,8 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import dayjs from 'dayjs'
 import YearMonthPanel from './YearMonthPanel.vue'
 import TimePanel from './TimePanel.vue'
+// 计算日历天数
+import { getHoliday } from '@/utils/holidays'
 
 interface Props {
   modelValue?: Date | [Date, Date]
@@ -150,12 +156,6 @@ const isSelected = (date: dayjs.Dayjs) => {
     (!tempSelectedDate.value && selectedDate.value?.isSame(date, 'day'))
   )
 }
-
-// 添加取消方法
-const cancelSelect = () => {
-  showPanel.value = false
-  tempSelectedDate.value = null // 清空临时选中的日期
-}
 const selectedTime = ref('00:00')
 
 // 添加 watch 来监听初始值
@@ -175,7 +175,7 @@ watch(
 const currentYear = computed(() => currentDate.value.year())
 const currentMonth = computed(() => currentDate.value.month())
 
-// 计算日历天数
+// 在 calendarDays computed 中修改返回的数据结构
 const calendarDays = computed(() => {
   const firstDayOfMonth = currentDate.value.startOf('month')
   const lastDayOfMonth = currentDate.value.endOf('month')
@@ -189,6 +189,7 @@ const calendarDays = computed(() => {
       date: date,
       dayOfMonth: date.date(),
       otherMonth: true,
+      holiday: getHoliday(date), // 添加这行
     })
   }
 
@@ -199,6 +200,7 @@ const calendarDays = computed(() => {
       date: date,
       dayOfMonth: date.date(),
       otherMonth: false,
+      holiday: getHoliday(date),
     })
   }
 
@@ -206,10 +208,12 @@ const calendarDays = computed(() => {
   const remainingDays = 42 - days.length
   for (let i = 0; i < remainingDays; i++) {
     const date = lastDayOfMonth.add(i + 1, 'day')
+    // 在 push 的对象中添加 holiday 属性
     days.push({
       date: date,
       dayOfMonth: date.date(),
       otherMonth: true,
+      holiday: getHoliday(date),
     })
   }
 
@@ -288,20 +292,6 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
 })
-
-// 添加在其他 ref 变量附近
-const showYearPanel = ref(false)
-const showMonthPanel = ref(false)
-
-// 添加处理方法
-const handleYearPanelToggle = (show: boolean) => {
-  showYearPanel.value = show
-}
-
-const handleMonthPanelToggle = (show: boolean) => {
-  showMonthPanel.value = show
-}
-
 const showTimeSelect = ref(false)
 
 const handleTimeSelectToggle = (show: boolean) => {
@@ -451,5 +441,36 @@ const handleTimeSelectToggle = (show: boolean) => {
 
 .btn-cancel:hover {
   background-color: #f5f7fa;
+}
+
+.day {
+  position: relative;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-number {
+  font-size: 14px;
+}
+
+.holiday-name {
+  font-size: 10px;
+  color: #ff4d4f;
+  margin-top: 2px;
+}
+
+.has-holiday {
+  color: #ff4d4f;
+}
+
+.has-holiday.other-month {
+  color: #ffa39e;
+}
+
+.has-holiday.selected {
+  color: white;
 }
 </style>
