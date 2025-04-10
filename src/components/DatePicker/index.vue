@@ -274,7 +274,7 @@ const isDisabled = (date: dayjs.Dayjs) => {
 
 const formatDate = (date: dayjs.Dayjs | null) => {
   if (!date) return ''
-  return date.format(props.format)
+  return props.showTime ? date.format(props.format) : date.format('YYYY-MM-DD')
 }
 
 // 点击外部关闭面板

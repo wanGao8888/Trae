@@ -11,7 +11,7 @@
       v-model="selectedDate"
       type="datetime"
       format="YYYY-MM-DD HH:mm"
-      :show-time="true"
+      :show-time="false"
       placeholder="请选择日期时间"
       @change="handleDateChange"
     />
