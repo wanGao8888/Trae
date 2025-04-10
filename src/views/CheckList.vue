@@ -6,63 +6,42 @@
     </div>
 
     <!-- 主表格部分 -->
-    <el-descriptions :column="2" border>
-      <el-descriptions-item :span="1" label="清场日期">
-        <div class="date-row">
-          <span>xx</span>年 <span>xx</span>月 <span>xx</span>日
-        </div>
-      </el-descriptions-item>
-      <el-descriptions-item :span="1">
-        <div class="right-section">
-          <el-descriptions :column="2" border>
-            <el-descriptions-item label="清场前批号">xx</el-descriptions-item>
-            <el-descriptions-item label="清场组员">xx</el-descriptions-item>
-            <el-descriptions-item label="清场后批号">xx</el-descriptions-item>
-            <el-descriptions-item label="清场时间段">
-              <div class="time-range">
-                <span>xx</span>
-                至
-                <span>xx</span>
-              </div>
-            </el-descriptions-item>
-          </el-descriptions>
-        </div>
-      </el-descriptions-item>
-    </el-descriptions>
+    <table class="clearance-table">
+      <tr>
+        <td rowspan="2" class="date-cell" style="width: 40%">
+          清场日期：<span>XXXX</span>年 <span>XX</span>月 <span>XX</span>日
+        </td>
+        <td class="info-cell" style="width: 14%">清场前批号：</td>
+        <td class="info-cell" style="width: 16%">XXXX</td>
+        <td class="info-cell" style="width: 14%">清场组员：</td>
+        <td class="info-cell" style="width: 16%">XXXX</td>
+      </tr>
+      <tr>
+        <td class="info-cell">清场后批号：</td>
+        <td class="info-cell">XXXX</td>
+        <td class="info-cell">清场时间段：</td>
+        <td class="info-cell">XX:XX 至 XX:XX</td>
+      </tr>
+    </table>
 
     <!-- 清场类型行 -->
-    <el-descriptions :column="4" border style="margin-top: -1px">
-      <el-descriptions-item label="清场类型">
-        <div class="area-cell">
-          <el-checkbox v-model="formData.clearanceAreas.batchChange"
-            >换批清场</el-checkbox
-          >
-        </div>
-      </el-descriptions-item>
-      <el-descriptions-item>
-        <div class="area-cell">
-          <el-checkbox v-model="formData.clearanceAreas.test"
-            >试验批清场</el-checkbox
-          >
-        </div>
-      </el-descriptions-item>
-      <el-descriptions-item>
-        <div class="area-cell">
-          <el-checkbox v-model="formData.clearanceAreas.shutdown"
-            >停产清场</el-checkbox
-          >
-        </div>
-      </el-descriptions-item>
-    </el-descriptions>
+    <table class="clearance-table" style="margin-top: -1px">
+      <tr>
+        <td class="area-col">清场类型</td>
+        <td style="text-align: center">换批清场□</td>
+        <td style="text-align: center">试验批清场□</td>
+        <td style="text-align: center">停产清场□</td>
+      </tr>
+    </table>
 
     <!-- 清场区域表格 -->
-    <table class="clearance-table">
+    <table class="clearance-table" style="margin-top: -1px">
       <thead>
         <tr>
           <th class="area-col">清场区域</th>
-          <th class="content-col">
+          <th class="content-col" style="text-align: center">
             清场内容
-            <div class="sub-header">在清场的位置打钩"√"</div>
+            <div class="sub-header">在清场的位置后划钩"√"</div>
           </th>
           <th class="status-col">是否清场</th>
           <th class="operator-col">清场人</th>
@@ -82,45 +61,62 @@
           </td>
           <td class="content-col">
             <div class="check-items-wrapper">
-              <div
+              <template
                 v-for="(subItem, subIndex) in item.items"
                 :key="subIndex"
-                class="check-item"
               >
-                {{ subItem.name }} □
-              </div>
+                <span class="check-item">{{ subItem.name }}□</span>
+              </template>
             </div>
           </td>
           <td class="status-col">
             <div class="status-item">YES □</div>
             <div class="status-item">N/A □</div>
           </td>
-          <td class="operator-col">XXXX</td>
-          <td class="date-col">XXXX</td>
+          <td class="operator-col">
+            {{
+              item.category !== '操作网' && item.category !== '外包柜'
+                ? 'XXXX'
+                : ''
+            }}
+          </td>
+          <td class="date-col">
+            {{
+              item.category !== '操作网' && item.category !== '外包柜'
+                ? 'XXXX'
+                : ''
+            }}
+          </td>
         </tr>
       </tbody>
     </table>
 
     <!-- 底部信息 -->
-    <el-descriptions :column="1" border style="margin-top: -1px">
-      <el-descriptions-item label="检查结果">
-        <div class="result-content">XXXX</div>
-      </el-descriptions-item>
-    </el-descriptions>
+    <table class="clearance-table" style="margin-top: -1px">
+      <tr>
+        <td class="info-label" width="120px">检查结果</td>
+        <td>XXXX</td>
+      </tr>
+    </table>
 
-    <el-descriptions :column="1" border style="margin-top: -1px">
-      <el-descriptions-item label="其他">
-        <div class="result-content">XXXX</div>
-      </el-descriptions-item>
-    </el-descriptions>
+    <table class="clearance-table" style="margin-top: -1px">
+      <tr>
+        <td class="info-label" width="120px">其他</td>
+        <td class="full-width-cell">是否清场中，已清场写"YES"，本次清场不涉及的写"N/A"</td>
+      </tr>
+    </table>
 
-    <el-descriptions :column="1" border style="margin-top: -1px">
-      <el-descriptions-item label="备注">
-        <div class="result-content">
-          是否清场中，已清场写"YES"，本次清场不涉及的写"N/A"
-        </div>
-      </el-descriptions-item>
-    </el-descriptions>
+    <table class="clearance-table" style="margin-top: -1px">
+      <tr>
+        <td class="info-label" width="120px">备注</td>
+        <td class="full-width-cell">是否清场中，已清场写"YES"，本次清场不涉及的写"N/A"</td>
+      </tr>
+    </table>
+
+    <!-- 添加清场组组长/日期信息 -->
+    <div class="footer-info">
+      清场组组长/日期：XXX年XX月XX日至XX日 IP负责人/日期：XXX年XX月XX日至XX日
+    </div>
   </div>
 </template>
 
@@ -233,30 +229,176 @@ const exportCheckList = () => {
 
 /* 表格相关样式 */
 .clearance-table {
-  width: 100%;
+  width: 60%;
+  margin: 0 auto;
   border-collapse: collapse;
-  border: 1px solid #ebeef5;
-  margin-top: -1px;
+}
+
+/* 清场类型行样式 */
+.clearance-table tr td[style*='text-align: center'] {
+  width: calc((100% - 100px) / 3); /* 修改计算方式 */
+}
+
+/* 调整列宽度 */
+.area-col {
+  width: 100px;
+  background-color: #fff;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.content-col {
+  width: calc(100% - 420px); /* 调整内容列宽度 */
+}
+
+.status-col {
+  width: 80px;
+}
+
+.operator-col,
+.date-col {
+  width: 80px;
+}
+
+/* 日期单元格样式调整 */
+.date-cell {
+  width: 35%;
+}
+
+.info-cell {
+  width: 15%;
 }
 
 .clearance-table th,
 .clearance-table td {
-  border: 1px solid #ebeef5;
-  padding: 12px;
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+  vertical-align: middle !important;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* 处理相邻表格的边框 */
+.clearance-table + .clearance-table {
+  margin-top: -1px;
+}
+
+/* 移除之前重复的边框样式定义 */
+.clearance-table th,
+.clearance-table td {
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+  vertical-align: middle !important;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* 移除重复的边框 */
+.clearance-table + .clearance-table {
+  border-top: none;
+}
+
+.type-label {
+  background-color: #fff;
   text-align: center;
+  padding: 8px;
+}
+
+/* 移除不需要的样式 */
+.type-row,
+.type-cell {
+  display: none;
+}
+
+/* 调整列宽度 */
+.area-col {
+  background-color: #fff; /* 移除灰色背景 */
   vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.content-col {
+  min-width: 500px;
+}
+
+.status-col {
+  width: 80px;
+}
+
+.operator-col,
+.date-col {
+  width: 80px;
+}
+
+/* 调整复选框样式 */
+.check-items-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.check-item {
+  white-space: nowrap;
+  padding: 2px 4px;
+  display: inline-block;
+}
+
+/* 调整批号文本样式 */
+.batch-note {
+  font-size: 14px;
+  color: #000;
+  margin-top: 4px;
+}
+
+/* Element Plus 组件样式调整 */
+:deep(.el-descriptions) {
+  --el-descriptions-table-border: 1px solid #000;
+}
+
+:deep(.el-descriptions__label) {
+  background-color: #fff; /* 移除灰色背景 */
+  color: #000;
+  padding: 8px;
+  font-weight: normal;
+  text-align: left;
+}
+
+:deep(.el-descriptions__content) {
+  padding: 8px;
+  color: #000;
+}
+
+/* 调整状态选项样式 */
+.status-item {
+  margin: 2px 0;
+  text-align: left;
+}
+
+/* 调整表头样式 */
+.sub-header {
+  font-size: 14px;
+  color: #000;
+  margin-top: 2px;
+}
+
+/* 调整结果内容样式 */
+.result-content {
+  padding: 8px;
+  min-height: 40px;
+  color: #000;
+  text-align: left;
 }
 
 .clearance-table th {
   background-color: #f5f7fa;
   color: #606266;
   font-weight: normal;
-}
-
-/* 列宽度设置 */
-.area-col {
-  width: 120px;
-  background-color: #f5f7fa;
 }
 
 .content-col {
@@ -333,9 +475,30 @@ const exportCheckList = () => {
 
 .operator-cell,
 .date-cell {
-  padding: 8px;
+  vertical-align: middle;
+  text-align: left;
+  height: 80px;
+  padding: 12px;
+  display: table-cell; /* 确保表格布局 */
+}
+
+.info-cell {
+  vertical-align: middle !important; /* 强制垂直居中 */
+  text-align: left;
+  padding: 12px;
+  height: 40px;
+  display: table-cell; /* 确保表格布局 */
+}
+
+/* 覆盖默认的表格样式 */
+.clearance-table td {
+  vertical-align: middle !important; /* 强制所有单元格垂直居中 */
+}
+
+.date-cell span {
+  display: inline-block;
+  min-width: 30px;
   text-align: center;
-  color: #666;
 }
 
 /* 其他样式 */
