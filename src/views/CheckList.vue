@@ -12,16 +12,16 @@
           <td rowspan="2" class="date-cell">
             清场日期：<span>XXXX</span>年 <span>XX</span>月 <span>XX</span>日
           </td>
-          <td class="info-cell" style="width: 120px">清场前批号：</td>
-          <td class="info-cell" style="width: 160px">XXXX</td>
-          <td class="info-cell" style="width: 120px">清场组员：</td>
-          <td class="info-cell" style="width: 160px">XXXX</td>
+          <td class="info-cell info-cell-label">清场前批号：</td>
+          <td class="info-cell info-cell-value">XXXX</td>
+          <td class="info-cell info-cell-label">清场组员：</td>
+          <td class="info-cell info-cell-value">XXXX</td>
         </tr>
         <tr>
-          <td class="info-cell" style="width: 120px">清场后批号：</td>
-          <td class="info-cell" style="width: 160px">XXXX</td>
-          <td class="info-cell" style="width: 120px">清场时间段：</td>
-          <td class="info-cell" style="width: 160px">XX:XX 至 XX:XX</td>
+          <td class="info-cell info-cell-label">清场后批号：</td>
+          <td class="info-cell info-cell-value">XXXX</td>
+          <td class="info-cell info-cell-label">清场时间段：</td>
+          <td class="info-cell info-cell-value">XX:XX 至 XX:XX</td>
         </tr>
       </tbody>
     </table>
