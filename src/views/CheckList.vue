@@ -7,31 +7,35 @@
 
     <!-- 主表格部分 -->
     <table class="clearance-table">
-      <tr>
-        <td rowspan="2" class="date-cell">
-          清场日期：<span>XXXX</span>年 <span>XX</span>月 <span>XX</span>日
-        </td>
-        <td class="info-cell" style="width: 120px">清场前批号：</td>
-        <td class="info-cell" style="width: 160px">XXXX</td>
-        <td class="info-cell" style="width: 120px">清场组员：</td>
-        <td class="info-cell" style="width: 160px">XXXX</td>
-      </tr>
-      <tr>
-        <td class="info-cell" style="width: 120px">清场后批号：</td>
-        <td class="info-cell" style="width: 160px">XXXX</td>
-        <td class="info-cell" style="width: 120px">清场时间段：</td>
-        <td class="info-cell" style="width: 160px">XX:XX 至 XX:XX</td>
-      </tr>
+      <tbody>
+        <tr>
+          <td rowspan="2" class="date-cell">
+            清场日期：<span>XXXX</span>年 <span>XX</span>月 <span>XX</span>日
+          </td>
+          <td class="info-cell" style="width: 120px">清场前批号：</td>
+          <td class="info-cell" style="width: 160px">XXXX</td>
+          <td class="info-cell" style="width: 120px">清场组员：</td>
+          <td class="info-cell" style="width: 160px">XXXX</td>
+        </tr>
+        <tr>
+          <td class="info-cell" style="width: 120px">清场后批号：</td>
+          <td class="info-cell" style="width: 160px">XXXX</td>
+          <td class="info-cell" style="width: 120px">清场时间段：</td>
+          <td class="info-cell" style="width: 160px">XX:XX 至 XX:XX</td>
+        </tr>
+      </tbody>
     </table>
 
     <!-- 清场类型行 -->
     <table class="clearance-table" style="margin-top: -1px">
-      <tr>
-        <td class="area-col">清场类型</td>
-        <td class="type-option">换批清场□</td>
-        <td class="type-option">试验批清场□</td>
-        <td class="type-option">停产清场□</td>
-      </tr>
+      <tbody>
+        <tr>
+          <td class="area-col">清场类型</td>
+          <td class="type-option">换批清场□</td>
+          <td class="type-option">试验批清场□</td>
+          <td class="type-option">停产清场□</td>
+        </tr>
+      </tbody>
     </table>
 
     <!-- 清场区域表格 -->
@@ -93,23 +97,27 @@
 
     <!-- 底部信息 -->
     <table class="clearance-table" style="margin-top: -1px">
-      <tr>
-        <td class="info-label" width="80px">检查结果</td>
-        <td>XXXX</td>
-      </tr>
+      <tbody>
+        <tr>
+          <td class="info-label" width="80px">检查结果</td>
+          <td>XXXX</td>
+        </tr>
+      </tbody>
     </table>
 
     <table class="clearance-table" style="margin-top: -1px">
-      <tr>
-        <td colspan="2">
-          其他：是否清场中，已清场写"YES"，本次清场不涉及的写"N/A"
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          备注：是否清场中，已清场写"YES"，本次清场不涉及的写"N/A"
-        </td>
-      </tr>
+      <tbody>
+        <tr>
+          <td colspan="2">
+            其他：是否清场中，已清场写"YES"，本次清场不涉及的写"N/A"
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            备注：是否清场中，已清场写"YES"，本次清场不涉及的写"N/A"
+          </td>
+        </tr>
+      </tbody>
     </table>
 
     <!-- 添加清场组组长/日期信息 -->
