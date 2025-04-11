@@ -56,12 +56,6 @@
         <tr v-for="(item, index) in checkItems" :key="index">
           <td class="area-col">
             {{ item.category }}
-            <div
-              v-if="item.category === '注塑机' || item.category === '组装机'"
-              class="batch-note"
-            >
-              本次的批号为 XX, XX, XX, XX
-            </div>
           </td>
           <td class="content-col">
             <div class="check-items-wrapper">
@@ -141,78 +135,95 @@ const formData = ref({
 // 为每个项目添加状态、操作人和日期字段
 const checkItems = ref([
   {
-    category: '外料料网',
+    category: '外供料间',
     items: [
-      { name: '标示' },
-      { name: '示范书' },
-      { name: '通道' },
-      { name: '原料料口' },
-      { name: '废料' },
+      { name: '标识' },
+      { name: '指示书' },
+      { name: '通知' },
+      { name: '原辅料' },
+      { name: '货位卡' },
     ],
   },
   {
-    category: '内料料网',
+    category: '内供料间',
     items: [
       { name: '设备' },
-      { name: '原料区' },
-      { name: '半成品区' },
-      { name: '成品区' },
-      { name: '空位料系统' },
+      { name: '混料机' },
+      { name: '粉碎机' },
+      { name: '烘干机' },
+      { name: '真空供料系统' },
+      { name: '容器' },
+      { name: '储料斗' },
+      { name: '工器具' },
+      { name: '标识' },
+      { name: '指示书' },
+      { name: '通知' },
     ],
   },
   {
     category: '注塑机',
     items: [
+      { name: '牵涉的机台号' },
       { name: '台面' },
-      { name: '机台成型' },
-      { name: '料管接口' },
-      { name: '回收/废料' },
-      { name: '安全门闸' },
-      { name: '模具' },
-      { name: '漏料' },
-      { name: '托盘' },
-      { name: '机台车站' },
-      { name: '自动分散' },
+      { name: '机台底部' },
+      { name: '料管余料' },
+      { name: '回收/废料袋' },
+      { name: '安全门两侧' },
+      { name: '模温机' },
+      { name: '周转箱' },
+      { name: '托油盘' },
+      { name: '料把周转箱' },
+      { name: '机台半成品' },
+      { name: '自动分检机' },
     ],
   },
   {
     category: '组装机',
     items: [
-      { name: '取放及其传动区域' },
-      { name: '外盒及其传动区域' },
-      { name: '内盒及其传动区域' },
+      { name: '牵涉的机台号' },
+      { name: '胶垫及其传动区域' },
+      { name: '外盖及其传动区域' },
+      { name: '内盖及其传动区域' },
       { name: '传送带及底部' },
-      { name: '原料输送' },
-      { name: '制品输送' },
+      { name: '储料箱底部' },
+      { name: '制品桶' },
       { name: '控制柜' },
-      { name: '两动直线' },
+      { name: '振动盘底部' },
+      { name: '状态标识' },
+      { name: '自动分拣机' },
     ],
   },
   {
-    category: '操作网',
+    category: '操作间',
     items: [
-      { name: '工具' },
-      { name: '刷料' },
-      { name: '其它' },
-      { name: '地板' },
+      { name: '工器具类' },
+      { name: '周转箱' },
+      { name: '托盘' },
+      { name: '货架' },
+      { name: '地架' },
       { name: '设备' },
-      { name: '电净室及设备网' },
-      { name: '工具' },
-      { name: '检验' },
-      { name: '标识' },
-      { name: '通道' },
+      { name: '超净台及底部顶部' },
+      { name: '其他' },
+      { name: '工具间' },
+      { name: '检验间' },
+      { name: '物流通道' },
+      { name: '传递窗' },
+      { name: '标识类' },
+      { name: '指示书' },
+      { name: '通知' },
+      { name: '标签' },
       { name: '记录' },
-      { name: '合格' },
+      { name: '合格证' },
     ],
   },
   {
     category: '外包间',
     items: [
-      { name: '制造用木' },
-      { name: '通道' },
+      { name: '制造指示书' },
+      { name: '通知' },
       { name: '标识' },
       { name: '记录' },
-      { name: '整改点' },
+      { name: '整袋成品' },
     ],
   },
 ])
