@@ -122,6 +122,17 @@ const router = createRouter({
         iconCode: 'e627',
       },
     },
+    {
+      path: '/checkList-edit',
+      name: 'CheckListEdit',
+      component: () => import('@/views/CheckListEdit.vue'),
+      meta: {
+        requiresAuth: true,
+        title: '清单管理编辑',
+        icon: 'ListEdit',
+        iconCode: 'e627',
+      },
+    },
   ],
 })
 
