@@ -369,18 +369,18 @@ const operatorOptions = ['王大', '王二', '王三']
   margin: 0 auto;
   border-collapse: collapse;
   table-layout: fixed;
-  box-sizing: border-box !important;
+  box-sizing: border-box;
 }
 
 /* 调整列宽度和对齐方式 */
 .clearance-table th.area-col,
 .clearance-table td.area-col,
 .area-col {
-  width: 80px !important;
+  width: 80px;
   background-color: #fff;
   vertical-align: middle;
   text-align: center;
-  box-sizing: border-box !important;
+  box-sizing: border-box;
 }
 
 .status-col {
@@ -388,28 +388,28 @@ const operatorOptions = ['王大', '王二', '王三']
 }
 
 .operator-col {
-  width: 140px !important;
+  width: 140px;
   text-align: left;
 }
 
 .date-col {
-  width: 180px !important;
+  width: 180px;
   text-align: center;
 }
 
 .content-col {
-  width: 480px !important;
+  width: 480px;
   text-align: left;
 }
 
 .type-option {
-  width: 240px !important;
+  width: 240px;
   text-align: center;
 }
 
 .type-option:nth-child(3),
 .type-option:nth-child(4) {
-  width: 320px !important;
+  width: 320px;
 }
 
 /* 调整输入框样式 */
@@ -465,33 +465,33 @@ const operatorOptions = ['王大', '王二', '王三']
 .clearance-table td {
   border: 1px solid #000;
   padding: 8px;
-  vertical-align: middle !important;
+  vertical-align: middle;
   font-size: 14px;
-  box-sizing: border-box !important;
+  box-sizing: border-box;
 }
 
 .info-cell-label {
-  width: 120px !important;
+  width: 120px;
   text-align: left;
 }
 
 .info-cell-value {
-  width: 200px !important;
+  width: 200px;
   text-align: left;
 }
 
 /* 特殊列宽度调整 */
 .info-cell-label:nth-child(3),
 .info-cell-label:nth-child(4) {
-  width: 200px !important;
+  width: 200px;
 }
 
 .info-cell-value:nth-child(3),
 .info-cell-value:nth-child(4) {
-  width: 160px !important;
+  width: 160px;
 }
 .date-cell {
-  width: 280px !important;
+  width: 280px;
   text-align: left;
   vertical-align: middle;
   padding-left: 20px;
@@ -550,14 +550,14 @@ const operatorOptions = ['王大', '王二', '王三']
 }
 
 .type-option {
-  width: 200px !important;
+  width: 200px;
   text-align: center;
 }
 
 .type-option:nth-child(3) {
-  width: 280px !important;
+  width: 280px;
 }
 .type-option:nth-child(4) {
-  width: 400px !important;
+  width: 400px;
 }
 </style>
