@@ -133,6 +133,17 @@ const router = createRouter({
         iconCode: 'e627',
       },
     },
+    {
+      path: '/dev-issues',
+      name: 'DevIssues',
+      component: () => import('../views/DevIssues.vue'),
+      meta: {
+        title: '开发问题记录',
+        requiresAuth: true,
+        icon: 'ListEdit',
+        iconCode: 'e627',
+      },
+    },
   ],
 })
 
