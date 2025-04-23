@@ -209,8 +209,13 @@ const handleUpload = (uploadFile: UploadFile) => {
 const currentEditIndex = ref<number | null>(null)
 
 const handleEdit = (index: number) => {
-  currentEditIndex.value = index
   const issue = issues.value[index]
+  if (!issue) {
+    ElMessage.error('未找到要编辑的记录')
+    return
+  }
+
+  currentEditIndex.value = index
   form.title = issue.title
   form.type = issue.type
   form.desc = issue.desc
@@ -270,21 +275,19 @@ const handleAdd = async () => {
 
       // 添加模式应该使用 addIssuesToDB
       const response = await addIssuesToDB(newIssue)
-      if (response && response.data) {
-        issues.value.unshift(response.data)
-        ElMessage.success('问题添加成功')
+      console.log(response, 'response')
+
+      if (response && response.code === 200) {
+        ElMessage.success(response.message)
       }
     }
 
+    // 在 handleAdd 函数成功后
     showDialog.value = false
     resetForm()
     currentEditIndex.value = null
-
-    // 重新获取最新列表
-    const data = await fetchIssuesFromDB()
-    if (data) {
-      issues.value = data
-    }
+    // 重新获取当前页数据
+    fetchList()
   } catch (error) {
     ElMessage.error('操作失败，请重试')
     console.error('更新失败:', error)
@@ -292,6 +295,11 @@ const handleAdd = async () => {
 }
 const handleDelete = (index: number) => {
   const issue = issues.value[index]
+  if (!issue) {
+    ElMessage.error('未找到要删除的记录')
+    return
+  }
+
   deleteIssuesFromDB(issue._id)
     .then(() => {
       ElMessage.success('删除成功')
