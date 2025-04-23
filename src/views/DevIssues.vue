@@ -25,6 +25,11 @@
           {{ formatDate(row.createdAt) }}
         </template>
       </el-table-column>
+      <el-table-column prop="creator" label="创建人" width="100">
+        <template #default="{ row }">
+          {{ creatorOptions.find((item) => item.value === row.creator)?.label }}
+        </template>
+      </el-table-column>
       <el-table-column label="图片" width="150">
         <template #default="{ row }">
           <el-image
@@ -96,6 +101,16 @@
             placeholder="请输入解决方案"
           />
         </el-form-item>
+        <el-form-item label="创建人" required>
+          <el-select v-model="form.creator" placeholder="请选择创建人">
+            <el-option
+              v-for="item in creatorOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="错误图片">
           <el-upload
             drag
@@ -145,6 +160,7 @@ type Issue = {
   solution: string // 新增解决方案字段
   images: UploadUserFile[] // 修改为UploadUserFile数组类型
   createdAt: string
+  creator: number // 新增创建人字段
 }
 
 const typeLabels = {
@@ -155,12 +171,19 @@ const typeLabels = {
   other: '其他',
 }
 
+// 新增创建人选项
+const creatorOptions = [
+  { label: 'gzg', value: 0 },
+  { label: 'xbd', value: 1 },
+]
+
 const form = reactive<Omit<Issue, '_id' | 'createdAt'>>({
   title: '',
   type: '',
   desc: '',
-  solution: '', // 新增解决方案字段
+  solution: '',
   images: [],
+  creator: 0,
 })
 
 const issues = ref<Issue[]>([])
@@ -222,6 +245,7 @@ const handleEdit = (index: number) => {
   form.solution = issue.solution
   // 确保图片数据的正确复制
   form.images = Array.isArray(issue.images) ? [...issue.images] : []
+  form.creator = issue.creator
   showDialog.value = true
 }
 
@@ -238,6 +262,10 @@ const handleAdd = async () => {
     ElMessage.error('请输入问题描述')
     return
   }
+  if (!form.creator) {
+    ElMessage.error('请选择创建人')
+    return
+  }
 
   try {
     if (currentEditIndex.value !== null) {
@@ -248,6 +276,7 @@ const handleAdd = async () => {
         type: form.type,
         desc: form.desc,
         solution: form.solution,
+        creator: form.creator,
         images: [...form.images],
         createdAt: issues.value[index].createdAt,
       }
@@ -314,6 +343,7 @@ const resetForm = () => {
   form.type = ''
   form.desc = ''
   form.solution = ''
+  form.creator = 0
   form.images = []
 }
 
