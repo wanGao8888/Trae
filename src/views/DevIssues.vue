@@ -119,9 +119,13 @@ import { ref, reactive, onMounted } from 'vue'
 import { UploadFilled, Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import type { UploadFile, UploadUserFile } from 'element-plus'
+import { addIssuesToDB } from '../apis/useIssuesAdd'
+import { fetchIssuesFromDB } from '../apis/useIssuesFetch'
+import { deleteIssuesFromDB } from '../apis/useIssuesDelete'
+import { updateIssuesToDB } from '../apis/useIssuesUpdate'
 
 type Issue = {
-  id: string
+  _id: string
   title: string
   type: string
   desc: string
@@ -138,7 +142,7 @@ const typeLabels = {
   other: '其他',
 }
 
-const form = reactive<Omit<Issue, 'id' | 'createdAt'>>({
+const form = reactive<Omit<Issue, '_id' | 'createdAt'>>({
   title: '',
   type: '',
   desc: '',
@@ -195,11 +199,11 @@ const handleEdit = (index: number) => {
   form.type = issue.type
   form.desc = issue.desc
   form.solution = issue.solution
-  form.images = [...issue.images]
+  // form.images = [...issue.images]
   showDialog.value = true
 }
 
-const handleAdd = () => {
+const handleAdd = async () => {
   if (!form.title.trim()) {
     ElMessage.error('请输入问题标题')
     return
@@ -213,33 +217,61 @@ const handleAdd = () => {
     return
   }
 
-  if (currentEditIndex.value !== null) {
-    // 编辑模式
-    const index = currentEditIndex.value
-    issues.value[index] = {
-      ...issues.value[index],
-      title: form.title,
-      type: form.type,
-      desc: form.desc,
-      solution: form.solution,
-      images: [...form.images],
-    }
-    ElMessage.success('问题更新成功')
-  } else {
-    // 添加模式
-    issues.value.unshift({
-      ...form,
-      images: [...form.images],
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-    })
-    ElMessage.success('问题添加成功')
-  }
+  try {
+    if (currentEditIndex.value !== null) {
+      // 编辑模式
+      const index = currentEditIndex.value
+      const updatedData = {
+        title: form.title,
+        type: form.type,
+        desc: form.desc,
+        solution: form.solution,
+        images: [...form.images],
+        createdAt: new Date().toISOString(),
+      }
 
-  localStorage.setItem('dev-issues', JSON.stringify(issues.value))
-  showDialog.value = false
-  resetForm()
-  currentEditIndex.value = null
+      // 正确：传递 id 和更新数据
+      await updateIssuesToDB(issues.value[index]._id, updatedData)
+
+      // 更新本地数据
+      issues.value[index] = {
+        ...issues.value[index],
+        ...updatedData,
+      }
+
+      ElMessage.success('问题更新成功')
+    } else {
+      // 添加模式
+      const newIssue = {
+        title: form.title,
+        type: form.type,
+        desc: form.desc,
+        solution: form.solution,
+        images: [...form.images],
+        createdAt: new Date().toISOString(),
+      }
+
+      // 添加模式应该使用 addIssuesToDB
+      const response = await addIssuesToDB(newIssue)
+      if (response && response.data) {
+        issues.value.unshift(response.data)
+        ElMessage.success('问题添加成功')
+      }
+    }
+
+    showDialog.value = false
+    resetForm()
+    currentEditIndex.value = null
+
+    // 重新获取最新列表
+    const data = await fetchIssuesFromDB()
+    if (data) {
+      issues.value = data
+    }
+  } catch (error) {
+    ElMessage.error('操作失败，请重试')
+    console.error('更新失败:', error)
+  }
 }
 
 const resetForm = () => {
@@ -257,10 +289,17 @@ const openAddDialog = () => {
 }
 
 onMounted(() => {
-  const data = localStorage.getItem('dev-issues')
-  if (data) {
-    issues.value = JSON.parse(data)
-  }
+  // 调用获取列表接口
+  fetchIssuesFromDB()
+    .then((data) => {
+      if (data) {
+        issues.value = data
+      }
+    })
+    .catch((error) => {
+      ElMessage.error('获取列表失败')
+      console.error('获取列表失败:', error)
+    })
 })
 
 const formatDate = (dateString: string) => {
@@ -274,9 +313,14 @@ const formatDate = (dateString: string) => {
 }
 
 const handleDelete = (index: number) => {
-  issues.value.splice(index, 1)
-  localStorage.setItem('dev-issues', JSON.stringify(issues.value))
-  ElMessage.success('删除成功')
+  console.log(index, 'ppp')
+
+  deleteIssuesFromDB(issues.value[index]._id)
+    .then(() => {
+      ElMessage.success('删除成功')
+      issues.value.splice(index, 1)
+    })
+    .catch((error) => {})
 }
 </script>
 
