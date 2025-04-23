@@ -183,7 +183,7 @@ const form = reactive<Omit<Issue, '_id' | 'createdAt'>>({
   desc: '',
   solution: '',
   images: [],
-  creator: 0,
+  creator: null,
 })
 
 const issues = ref<Issue[]>([])
@@ -262,7 +262,7 @@ const handleAdd = async () => {
     ElMessage.error('请输入问题描述')
     return
   }
-  if (!form.creator) {
+  if (form.creator === undefined || form.creator === null) {
     ElMessage.error('请选择创建人')
     return
   }
@@ -298,6 +298,7 @@ const handleAdd = async () => {
         type: form.type,
         desc: form.desc,
         solution: form.solution,
+        creator: form.creator,
         images: [...form.images],
         createdAt: new Date().toISOString(),
       }
@@ -343,7 +344,7 @@ const resetForm = () => {
   form.type = ''
   form.desc = ''
   form.solution = ''
-  form.creator = 0
+  form.creator = null
   form.images = []
 }
 
