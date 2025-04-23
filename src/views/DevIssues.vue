@@ -275,8 +275,6 @@ const handleAdd = async () => {
 
       // 添加模式应该使用 addIssuesToDB
       const response = await addIssuesToDB(newIssue)
-      console.log(response, 'response')
-
       if (response && response.code === 200) {
         ElMessage.success(response.message)
       }
@@ -303,7 +301,7 @@ const handleDelete = (index: number) => {
   deleteIssuesFromDB(issue._id)
     .then(() => {
       ElMessage.success('删除成功')
-      issues.value = issues.value.filter((item) => item._id !== issue._id)
+      fetchList()
     })
     .catch((error) => {
       ElMessage.error('删除失败')
