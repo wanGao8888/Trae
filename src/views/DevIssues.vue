@@ -90,6 +90,7 @@
             multiple
             :auto-upload="false"
             :on-change="handleUpload"
+            :on-remove="handleRemove"
             list-type="picture-card"
             :file-list="form.images"
           >
@@ -199,7 +200,8 @@ const handleEdit = (index: number) => {
   form.type = issue.type
   form.desc = issue.desc
   form.solution = issue.solution
-  form.images = [...(issue.images || [])] // 添加空数组作为默认值
+  // 确保图片数据的正确复制
+  form.images = Array.isArray(issue.images) ? [...issue.images] : []
   showDialog.value = true
 }
 
@@ -322,6 +324,10 @@ const formatDate = (dateString: string) => {
     .getHours()
     .toString()
     .padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+}
+
+const handleRemove = (file: UploadFile) => {
+  form.images = form.images.filter(img => img.name !== file.name)
 }
 </script>
 
