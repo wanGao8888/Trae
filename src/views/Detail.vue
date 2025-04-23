@@ -146,7 +146,6 @@ const submitForm = async () => {
   await formRef.value.validate((valid) => {
     if (valid) {
       const now = new Date().toISOString().split('T')[0]
-      console.log(now, 123)
 
       if (formData.id === 0) {
         // 添加数据

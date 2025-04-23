@@ -4,7 +4,6 @@ import request from '../utils/request'
 export const addIssuesToDB = async (issues) => {
   try {
     const response = await request.post('/api/issues/add', issues)
-    console.log(response)
     return response
   } catch (error) {
     console.error('Error storing issues:', error)

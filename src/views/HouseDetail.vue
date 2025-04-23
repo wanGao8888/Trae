@@ -9,7 +9,11 @@
       bodyAlign="center"
     >
       <!-- 为每个操作单元格提供自定义内容 -->
-      <template v-for="(house, index) in houses" :key="house.id" #[`cell-${index}-4`]>
+      <template
+        v-for="(house, index) in houses"
+        :key="house.id"
+        #[`cell-${index}-4`]
+      >
         <button class="edit-btn" @click="editHouse(house.id)">编辑</button>
         <button class="delete-btn" @click="deleteHouse(house.id)">删除</button>
       </template>
@@ -25,7 +29,7 @@ import TableComponent from '../components/TableComponent.vue'
 const houses = ref([
   { id: 1, name: '房屋A', address: '地址A', price: '100万', operator: '张三' },
   { id: 2, name: '房屋B', address: '地址B', price: '200万', operator: '李四' },
-  { id: 3, name: '房屋C', address: '地址C', price: '300万', operator: '王五' }
+  { id: 3, name: '房屋C', address: '地址C', price: '300万', operator: '王五' },
 ])
 
 // 添加操作人列
@@ -33,7 +37,7 @@ const tableHeaders = ['房屋名称', '地址', '价格', '操作人', '操作']
 
 // 使用计算属性格式化表格数据，不再包含HTML字符串
 const formattedHouseData = computed(() => {
-  return houses.value.map(house => [
+  return houses.value.map((house) => [
     house.name,
     house.address,
     house.price,
@@ -47,15 +51,13 @@ const footerText = computed(() => `总计: ${houses.value.length} 条记录`)
 
 // 编辑房屋
 const editHouse = (id: number) => {
-  console.log(`编辑房屋ID: ${id}`)
   alert(`编辑房屋ID: ${id}，功能待实现`)
 }
 
 // 删除房屋
 const deleteHouse = (id: number) => {
-  console.log(`删除房屋ID: ${id}`)
   if (confirm(`确定要删除ID为 ${id} 的房屋吗？`)) {
-    houses.value = houses.value.filter(house => house.id !== id)
+    houses.value = houses.value.filter((house) => house.id !== id)
   }
 }
 </script>
@@ -74,7 +76,7 @@ h1 {
 }
 
 .edit-btn {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   padding: 5px 10px;

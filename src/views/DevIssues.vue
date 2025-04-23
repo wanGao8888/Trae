@@ -58,6 +58,18 @@
       </el-table-column>
     </el-table>
 
+    <div class="pagination-container">
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[10, 20, 30, 50]"
+        :total="total"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handlePageChange"
+      />
+    </div>
+
     <el-dialog v-model="showDialog" title="添加问题" width="50%">
       <el-form :model="form" label-width="100px">
         <el-form-item label="问题标题" required>
@@ -153,6 +165,9 @@ const form = reactive<Omit<Issue, '_id' | 'createdAt'>>({
 
 const issues = ref<Issue[]>([])
 const showDialog = ref(false)
+const total = ref(0)
+const pageSize = ref(10)
+const currentPage = ref(1)
 
 const getTagType = (
   type: string
@@ -302,18 +317,35 @@ const openAddDialog = () => {
   showDialog.value = true // 打开对话框
 }
 
+// 修改获取列表的函数
+const fetchList = async () => {
+  try {
+    const data = await fetchIssuesFromDB(currentPage.value, pageSize.value)
+    if (data) {
+      issues.value = data.list
+      total.value = data.total
+    }
+  } catch (error) {
+    ElMessage.error('获取列表失败')
+    console.error('获取列表失败:', error)
+  }
+}
+
+// 添加页码改变的处理函数
+const handlePageChange = (page: number) => {
+  currentPage.value = page
+  fetchList()
+}
+
+// 添加每页条数改变的处理函数
+const handleSizeChange = (size: number) => {
+  pageSize.value = size
+  currentPage.value = 1
+  fetchList()
+}
+
 onMounted(() => {
-  // 调用获取列表接口
-  fetchIssuesFromDB()
-    .then((data) => {
-      if (data) {
-        issues.value = data
-      }
-    })
-    .catch((error) => {
-      ElMessage.error('获取列表失败')
-      console.error('获取列表失败:', error)
-    })
+  fetchList()
 })
 
 const formatDate = (dateString: string) => {
@@ -421,5 +453,10 @@ const handleRemove = (file: UploadFile) => {
   height: 100px;
   object-fit: cover;
   border-radius: 4px;
+}
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

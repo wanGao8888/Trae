@@ -100,8 +100,26 @@ app.delete('/api/issues/delete/:id', errorHandler(async (req, res) => {
 
 // 列表接口
 app.get('/api/issues/list', errorHandler(async (req, res) => {
-  const issues = await collection.find({}).sort({ createdAt: -1 }).toArray()
-  sendResponse(res, 200, { data: issues })
+  const pageNum = parseInt(req.query.pageNum) || 1
+  const pageSize = parseInt(req.query.pageSize) || 10
+  
+  const skip = (pageNum - 1) * pageSize
+  
+  const total = await collection.countDocuments({})
+  const issues = await collection.find({})
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(pageSize)
+    .toArray()
+    
+  sendResponse(res, 200, { 
+    data: {
+      list: issues,
+      total,
+      pageNum,
+      pageSize
+    }
+  })
 }))
 
 app.listen(port, () => {

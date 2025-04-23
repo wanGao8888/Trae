@@ -4,7 +4,6 @@ import request from '../utils/request'
 export const updateIssuesToDB = async (id, updateData) => {
   try {
     const response = await request.put(`/api/issues/update/${id}`, updateData)
-    console.log(response)
     return response
   } catch (error) {
     console.error('Error updating issues:', error)
