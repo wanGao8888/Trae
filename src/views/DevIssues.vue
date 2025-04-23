@@ -64,7 +64,7 @@
           <el-input v-model="form.title" placeholder="请输入问题标题" />
         </el-form-item>
         <el-form-item label="问题类型" required>
-          <el-select v-model="form.type">
+          <el-select v-model="form.type" placeholder="请选择问题类型">
             <el-option
               v-for="(label, value) in typeLabels"
               :key="value"
@@ -327,7 +327,7 @@ const formatDate = (dateString: string) => {
 }
 
 const handleRemove = (file: UploadFile) => {
-  form.images = form.images.filter(img => img.name !== file.name)
+  form.images = form.images.filter((img) => img.name !== file.name)
 }
 </script>
 
