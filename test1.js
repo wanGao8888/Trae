@@ -137,7 +137,7 @@ app.get('/api/issues/list', async (req, res) => {
   try {
     const database = client.db('admin')
     const collection = database.collection('test1')
-    const issues = await collection.find({}).toArray()
+    const issues = await collection.find({}).sort({ createdAt: -1 }).toArray()
     res.json({
       success: true,
       code: 200,

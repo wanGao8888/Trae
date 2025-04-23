@@ -199,7 +199,7 @@ const handleEdit = (index: number) => {
   form.type = issue.type
   form.desc = issue.desc
   form.solution = issue.solution
-  // form.images = [...issue.images]
+  form.images = [...(issue.images || [])] // 添加空数组作为默认值
   showDialog.value = true
 }
 
@@ -227,7 +227,7 @@ const handleAdd = async () => {
         desc: form.desc,
         solution: form.solution,
         images: [...form.images],
-        createdAt: new Date().toISOString(),
+        createdAt: issues.value[index].createdAt,
       }
 
       // 正确：传递 id 和更新数据
@@ -273,6 +273,18 @@ const handleAdd = async () => {
     console.error('更新失败:', error)
   }
 }
+const handleDelete = (index: number) => {
+  const issue = issues.value[index]
+  deleteIssuesFromDB(issue._id)
+    .then(() => {
+      ElMessage.success('删除成功')
+      issues.value = issues.value.filter((item) => item._id !== issue._id)
+    })
+    .catch((error) => {
+      ElMessage.error('删除失败')
+      console.error('删除失败:', error)
+    })
+}
 
 const resetForm = () => {
   form.title = ''
@@ -310,17 +322,6 @@ const formatDate = (dateString: string) => {
     .getHours()
     .toString()
     .padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
-}
-
-const handleDelete = (index: number) => {
-  console.log(index, 'ppp')
-
-  deleteIssuesFromDB(issues.value[index]._id)
-    .then(() => {
-      ElMessage.success('删除成功')
-      issues.value.splice(index, 1)
-    })
-    .catch((error) => {})
 }
 </script>
 
