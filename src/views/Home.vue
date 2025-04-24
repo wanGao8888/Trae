@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <search-input style="margin-bottom: 10px" />
+    <DatePickerCN v-model="defaultValue" style="margin-bottom: 10px" />
     <TimePickerStep v-model="time" />
     <Switch
       style="margin-bottom: 10px"
@@ -91,6 +92,7 @@ import Switch from '@/components/Switch.vue'
 import { ref, watch, computed } from 'vue'
 import TimePickerStep from '@/components/TimePickerStep/index.vue'
 import CustomDatePicker from '@/components/DatePicker/index.vue'
+import DatePickerCN from '@/components/DatePickerCN/index.vue'
 
 const time = ref('')
 const selectedDate = ref(new Date()) // 设置默认值为当前日期
@@ -150,6 +152,7 @@ watch(
   },
   { deep: true }
 )
+const defaultValue = ref('') // 添加这行代码
 </script>
 
 <style scoped>
