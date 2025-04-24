@@ -118,12 +118,23 @@
             :auto-upload="false"
             :on-change="handleUpload"
             :on-remove="handleRemove"
+            :on-preview="handlePictureCardPreview"
             list-type="picture-card"
             :file-list="form.images"
           >
             <el-icon><upload-filled /></el-icon>
             <div>拖拽上传或<em>点击选择</em></div>
           </el-upload>
+
+          <el-dialog v-model="dialogVisible" append-to-body>
+            <div class="preview-container">
+              <img
+                :src="dialogImageUrl"
+                alt="Preview Image"
+                class="preview-image"
+              />
+            </div>
+          </el-dialog>
           <!-- <div class="upload-preview-container">
             <img
               v-for="(file, index) in form.images"
@@ -146,7 +157,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { UploadFilled, Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import type { UploadFile, UploadUserFile } from 'element-plus'
+import type { UploadFile, UploadUserFile, UploadProps } from 'element-plus'
 import { addIssuesToDB } from '../apis/useIssuesAdd'
 import { fetchIssuesFromDB } from '../apis/useIssuesFetch'
 import { deleteIssuesFromDB } from '../apis/useIssuesDelete'
@@ -191,6 +202,8 @@ const showDialog = ref(false)
 const total = ref(0)
 const pageSize = ref(10)
 const currentPage = ref(1)
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
 
 const getTagType = (
   type: string
@@ -398,6 +411,10 @@ const formatDate = (dateString: string) => {
 const handleRemove = (file: UploadFile) => {
   form.images = form.images.filter((img) => img.name !== file.name)
 }
+const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
+  dialogImageUrl.value = uploadFile.url!
+  dialogVisible.value = true
+}
 </script>
 
 <style scoped>
@@ -495,5 +512,19 @@ const handleRemove = (file: UploadFile) => {
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+}
+
+.preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
 }
 </style>
