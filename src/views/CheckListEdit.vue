@@ -89,15 +89,17 @@
                   <el-checkbox
                     v-for="(subItem, subIndex) in item.items"
                     :key="subIndex"
-                    :label="subItem.name"
-                  />
+                    :value="subItem.name"
+                  >
+                    {{ subItem.name }}
+                  </el-checkbox>
                 </el-checkbox-group>
               </div>
             </td>
             <td class="status-col">
               <el-radio-group v-model="item.status">
-                <el-radio label="YES">YES</el-radio>
-                <el-radio label="N/A">N/A</el-radio>
+                <el-radio value="YES">YES</el-radio>
+                <el-radio value="N/A">N/A</el-radio>
               </el-radio-group>
             </td>
             <td class="operator-col">
