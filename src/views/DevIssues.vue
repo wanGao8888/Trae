@@ -8,6 +8,21 @@
       </el-button>
     </div>
 
+    <!-- 修改搜索框 -->
+    <div class="search-container">
+      <el-input
+        v-model="searchKeyword"
+        placeholder="请输入搜索关键词"
+        class="search-input"
+        clearable
+        @input="handleSearch"
+      >
+        <template #prefix>
+          <el-icon><Search /></el-icon>
+        </template>
+      </el-input>
+    </div>
+
     <el-table :data="issues" style="width: 100%" stripe border>
       <el-table-column type="index" label="序号" width="60" />
       <el-table-column prop="title" label="标题" width="180" />
@@ -155,13 +170,14 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { UploadFilled, Plus } from '@element-plus/icons-vue'
+import { UploadFilled, Plus, Search } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import type { UploadFile, UploadUserFile, UploadProps } from 'element-plus'
 import { addIssuesToDB } from '../apis/useIssuesAdd'
 import { fetchIssuesFromDB } from '../apis/useIssuesFetch'
 import { deleteIssuesFromDB } from '../apis/useIssuesDelete'
 import { updateIssuesToDB } from '../apis/useIssuesUpdate'
+import { debounce } from '../utils/debounce'
 
 type Issue = {
   _id: string
@@ -367,10 +383,13 @@ const openAddDialog = () => {
   showDialog.value = true // 打开对话框
 }
 
-// 修改获取列表的函数
 const fetchList = async () => {
   try {
-    const data = await fetchIssuesFromDB(currentPage.value, pageSize.value)
+    const data = await fetchIssuesFromDB(
+      currentPage.value,
+      pageSize.value,
+      searchKeyword.value
+    )
     if (data) {
       issues.value = data.list
       total.value = data.total
@@ -415,6 +434,15 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
   dialogImageUrl.value = uploadFile.url!
   dialogVisible.value = true
 }
+
+// 添加搜索相关的变量
+const searchKeyword = ref('')
+
+// 修改搜索处理函数
+const handleSearch = debounce(() => {
+  currentPage.value = 1
+  fetchList()
+}, 1000)
 </script>
 
 <style scoped>
@@ -526,5 +554,12 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
   max-width: 100%;
   max-height: 80vh;
   object-fit: contain;
+}
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 300px;
 }
 </style>

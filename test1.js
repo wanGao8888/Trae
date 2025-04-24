@@ -102,11 +102,21 @@ app.delete('/api/issues/delete/:id', errorHandler(async (req, res) => {
 app.get('/api/issues/list', errorHandler(async (req, res) => {
   const pageNum = parseInt(req.query.pageNum) || 1
   const pageSize = parseInt(req.query.pageSize) || 10
+  const searchText = req.query.searchText || ''
   
   const skip = (pageNum - 1) * pageSize
   
-  const total = await collection.countDocuments({})
-  const issues = await collection.find({})
+  // 构建搜索条件
+  const searchQuery = searchText ? {
+    $or: [
+      { title: { $regex: searchText, $options: 'i' } },
+      { desc: { $regex: searchText, $options: 'i' } },
+      { solution: { $regex: searchText, $options: 'i' } }
+    ]
+  } : {}
+  
+  const total = await collection.countDocuments(searchQuery)
+  const issues = await collection.find(searchQuery)
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(pageSize)
