@@ -32,6 +32,7 @@
     "@types/node": "^22.13.5",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
+    "sass-embedded": "^1.87.0",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
     "vite-plugin-mock": "^3.0.2",
