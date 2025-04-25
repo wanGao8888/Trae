@@ -91,7 +91,7 @@ const router = createRouter({
       name: 'fileUploader',
       component: () => import('@/views/FileUploader.vue'),
       meta: {
-        requiresAuth: true,
+        // requiresAuth: true,
         title: '文件上传',
         icon: 'Upload',
         iconCode: 'e609',
