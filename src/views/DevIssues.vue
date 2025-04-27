@@ -177,7 +177,7 @@ import { addIssuesToDB } from '../apis/useIssuesAdd'
 import { fetchIssuesFromDB } from '../apis/useIssuesFetch'
 import { deleteIssuesFromDB } from '../apis/useIssuesDelete'
 import { updateIssuesToDB } from '../apis/useIssuesUpdate'
-import { debounce } from '../utils/debounce'
+import { debounce } from '../utils/tools'
 
 type Issue = {
   _id: string
