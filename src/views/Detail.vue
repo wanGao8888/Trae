@@ -90,7 +90,7 @@ const tableData = ref<TableRow[]>([])
 const fetchTableData = async () => {
   loading.value = true
   try {
-    const result = await request.get('/detail/list')
+    const result = await request.get('/api/detail/list')
     tableData.value = result.data
   } catch (error) {
     console.error(error)
