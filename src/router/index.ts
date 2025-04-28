@@ -15,7 +15,6 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
         title: '首页',
-        icon: 'HomeFilled',
         iconCode: 'e867',
       },
     },
@@ -26,7 +25,6 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
         title: '详情管理',
-        icon: 'Document',
         iconCode: 'e673',
       },
     },
@@ -37,7 +35,6 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
         title: '图片转换',
-        icon: 'Picture',
         iconCode: 'e6ec',
       },
     },
@@ -48,7 +45,6 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
         title: '房屋详情',
-        icon: 'House',
         iconCode: 'e639',
       },
     },
@@ -59,7 +55,6 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
         title: '照片墙',
-        icon: 'Picture',
         iconCode: 'e600',
       },
     },
@@ -71,7 +66,6 @@ const router = createRouter({
         requiresAuth: true,
         hidden: true,
         title: '树结构Demo',
-        icon: 'Tree',
         iconCode: 'e867',
       },
     },
@@ -82,7 +76,6 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
         title: '地图页面',
-        icon: 'Location',
         iconCode: 'e67e',
       },
     },
@@ -93,7 +86,6 @@ const router = createRouter({
       meta: {
         // requiresAuth: true,
         title: '文件上传',
-        icon: 'Upload',
         iconCode: 'e609',
       },
     },
@@ -118,20 +110,28 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
         title: '清单管理',
-        icon: 'List',
         iconCode: 'e627',
       },
-    },
-    {
-      path: '/checkList-edit',
-      name: 'CheckListEdit',
-      component: () => import('@/views/CheckListEdit.vue'),
-      meta: {
-        requiresAuth: true,
-        title: '清单管理编辑',
-        icon: 'ListEdit',
-        iconCode: 'e627',
-      },
+      children: [
+        {
+          path: 'list',
+          name: 'CheckListMain',
+          component: () => import('@/views/CheckList.vue'),
+          meta: {
+            requiresAuth: true,
+            title: '清单列表',
+          },
+        },
+        {
+          path: 'edit',
+          name: 'CheckListEdit',
+          component: () => import('@/views/CheckListEdit.vue'),
+          meta: {
+            requiresAuth: true,
+            title: '清单编辑',
+          },
+        },
+      ],
     },
     {
       path: '/dev-issues',
@@ -140,8 +140,17 @@ const router = createRouter({
       meta: {
         title: '开发问题记录',
         requiresAuth: true,
-        icon: 'ListEdit',
         iconCode: 'e627',
+      },
+    },
+    {
+      path: '/code-test',
+      name: 'CodeTest',
+      component: () => import('@/views/CodeTest.vue'),
+      meta: {
+        requiresAuth: true,
+        title: '代码测试',
+        iconCode: 'e6d4',
       },
     },
   ],

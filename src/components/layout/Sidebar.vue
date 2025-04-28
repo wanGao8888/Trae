@@ -9,23 +9,36 @@
       text-color="#fff"
       active-text-color="#409EFF"
     >
-      <el-menu-item
-        v-for="route in menuRoutes"
-        :key="route.path"
-        :index="route.path"
-      >
-        <Icon
-          :code="route.meta?.iconCode as string"
-          color="#ccc"
-          class="icon"
-        />
-        <span>{{ route.meta?.title }}</span>
-      </el-menu-item>
+      <template v-for="route in menuRoutes" :key="route.path">
+        <!-- 有子菜单的情况 -->
+        <el-sub-menu
+          v-if="route.children && route.children.length"
+          :index="route.path"
+        >
+          <template #title>
+            <Icon :code="route.meta?.iconCode" color="#ccc" class="icon" />
+            <span>{{ route.meta?.title }}</span>
+          </template>
+          <el-menu-item
+            v-for="child in route.children"
+            :key="child.path"
+            :index="`${route.path}${child.path ? '/' + child.path : ''}`"
+          >
+            <span>{{ child.meta?.title }}</span>
+          </el-menu-item>
+        </el-sub-menu>
+
+        <!-- 没有子菜单的情况 -->
+        <el-menu-item v-else :index="route.path">
+          <Icon :code="route.meta?.iconCode" color="#ccc" class="icon" />
+          <span>{{ route.meta?.title }}</span>
+        </el-menu-item>
+      </template>
     </el-menu>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 import Icon from '../Icon/Icon.vue'
@@ -71,5 +84,21 @@ const activeMenu = computed(() => {
 
 :deep(.el-menu) {
   border-right: none;
+}
+
+:deep(.el-sub-menu__title) {
+  &:hover {
+    background-color: #263445 !important;
+  }
+}
+
+:deep(.el-menu-item) {
+  &:hover {
+    background-color: #263445 !important;
+  }
+
+  &.is-active {
+    background-color: #263445 !important;
+  }
 }
 </style>
