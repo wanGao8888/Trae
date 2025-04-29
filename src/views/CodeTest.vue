@@ -17,6 +17,7 @@
             class="code-editor"
             placeholder="请输入要测试的代码"
             spellcheck="false"
+            @keydown.tab.prevent="handleTab"
           />
         </div>
         
@@ -90,6 +91,21 @@ const clearForm = () => {
   form.code = ''
   form.input = ''
   testResult.value = ''
+}
+
+const handleTab = (e: KeyboardEvent) => {
+  const target = e.target as HTMLTextAreaElement
+  const start = target.selectionStart
+  const end = target.selectionEnd
+
+  // 在光标位置插入制表符（两个空格）
+  const spaces = '  '
+  form.code = form.code.substring(0, start) + spaces + form.code.substring(end)
+
+  // 设置新的光标位置
+  setTimeout(() => {
+    target.selectionStart = target.selectionEnd = start + spaces.length
+  })
 }
 </script>
 
