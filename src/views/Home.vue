@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <search-input style="margin-bottom: 10px" />
-    <DatePickerCN v-model="defaultValue" style="margin-bottom: 10px" />
+    <DatePickerCN v-model="defaultValue" />
     <TimePickerStep v-model="time" />
     <Switch
       style="margin-bottom: 10px"
