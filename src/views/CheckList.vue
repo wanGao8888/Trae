@@ -124,14 +124,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const formData = ref({
-  clearanceAreas: {
-    batchChange: false,
-    test: false,
-    shutdown: false,
-  },
-})
-
 // 为每个项目添加状态、操作人和日期字段
 const checkItems = ref([
   {
