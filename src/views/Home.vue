@@ -1,6 +1,9 @@
 <template>
   <div class="home">
     <search-input style="margin-bottom: 10px" />
+    <div>
+      <cascader-with-description v-model="cascaderValue" :options="options" />
+    </div>
     <DatePickerCN v-model="defaultValue" />
     <TimePickerStep v-model="time" />
     <Switch
@@ -93,9 +96,48 @@ import { ref, watch, computed } from 'vue'
 import TimePickerStep from '@/components/TimePickerStep/index.vue'
 import CustomDatePicker from '@/components/DatePicker/index.vue'
 import DatePickerCN from '@/components/DatePickerCN/index.vue'
+import CascaderWithDescription from '@/components/CascaderWithDescription.vue'
 
 const time = ref('')
+const cascaderValue = ref({
+  items: [],
+})
+
 const selectedDate = ref(new Date()) // 设置默认值为当前日期
+const options = [
+  {
+    value: 'zhinan',
+    label: '指南',
+    children: [
+      {
+        value: 'shejiyuanze',
+        label: '设计原则',
+        children: [
+          {
+            value: 'yizhi',
+            label: '一致',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    value: 'zhinan2',
+    label: '指南2',
+    children: [
+      {
+        value: 'shejiyuanze2',
+        label: '设计原则2',
+        children: [
+          {
+            value: 'yizhi2',
+            label: '一致2',
+          },
+        ],
+      },
+    ],
+  },
+]
 
 const handleDateChange = (value) => {
   console.log('选择的日期：', value)
@@ -152,7 +194,14 @@ watch(
   },
   { deep: true }
 )
-const defaultValue = ref('') // 添加这行代码
+watch(
+  cascaderValue,
+  (newValue) => {
+    console.log('级联选择器值变化：', newValue)
+  },
+  { deep: true }
+)
+const defaultValue = ref('')
 </script>
 
 <style scoped>
