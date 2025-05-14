@@ -5,6 +5,9 @@
       <cascader-with-description v-model="cascaderValue" :options="options" />
     </div>
     <DatePickerCN v-model="defaultValue" />
+    <div style="margin: 10px 0">
+      <advanced-cascader v-model="selectedValues" :options="options1" />
+    </div>
     <TimePickerStep v-model="time" />
     <Switch
       style="margin-bottom: 10px"
@@ -97,6 +100,7 @@ import TimePickerStep from '@/components/TimePickerStep/index.vue'
 import CustomDatePicker from '@/components/DatePicker/index.vue'
 import DatePickerCN from '@/components/DatePickerCN/index.vue'
 import CascaderWithDescription from '@/components/CascaderWithDescription.vue'
+import AdvancedCascader from '@/components/AdvancedCascader.vue'
 
 const time = ref('')
 const cascaderValue = ref({
@@ -134,6 +138,57 @@ const options = [
             label: '一致2',
           },
         ],
+      },
+    ],
+  },
+]
+
+const selectedValues = ref([])
+
+const options1 = [
+  {
+    value: '1',
+    label: '选项1',
+    children: [
+      {
+        value: '1-1',
+        label: '选项1-1',
+      },
+      {
+        value: '1-2',
+        label: '选项1-2',
+      },
+    ],
+  },
+  {
+    value: '2',
+    label: '选项2',
+    children: [
+      {
+        value: '2-1',
+        label: '选项2-1',
+      },
+      {
+        value: '2-2',
+        label: '选项2-2',
+      },
+    ],
+  },
+  {
+    value: '3',
+    label: '选项3',
+    children: [
+      {
+        value: '3-1',
+        label: '选项3-1',
+      },
+      {
+        value: '3-2',
+        label: '选项3-2',
+      },
+      {
+        value: '3-3',
+        label: '选项3-3',
       },
     ],
   },
