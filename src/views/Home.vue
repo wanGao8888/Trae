@@ -89,6 +89,13 @@
         </el-card>
       </el-col>
     </el-row>
+
+    <el-cascader
+      v-model="casValue"
+      :props="{ multiple: true }"
+      :options="options2"
+      @change="change1"
+    />
   </div>
 </template>
 
@@ -102,6 +109,103 @@ import DatePickerCN from '@/components/DatePickerCN/index.vue'
 import CascaderWithDescription from '@/components/CascaderWithDescription.vue'
 import AdvancedCascader from '@/components/AdvancedCascader.vue'
 
+const shareScopeEnd = ref([])
+const shareScope = ref('-1')
+const options2 = ref([
+  {
+    value: 'zhinan',
+    label: '指南',
+    children: [
+      {
+        value: 'basic',
+        label: 'Basic',
+      },
+      {
+        value: 'form',
+        label: 'Form',
+      },
+      {
+        value: 'data',
+        label: 'Data',
+      },
+      {
+        value: 'notice',
+        label: 'Notice',
+      },
+    ],
+  },
+  {
+    value: 'zujian',
+    label: '组件',
+    children: [
+      {
+        value: 'basic',
+        label: 'Basic',
+      },
+      {
+        value: 'form',
+        label: 'Form',
+      },
+      {
+        value: 'data',
+        label: 'Data',
+      },
+      {
+        value: 'notice',
+        label: 'Notice',
+      },
+    ],
+  },
+  {
+    value: 'ziyuan',
+    label: '资源',
+  },
+])
+const casValue = ref([])
+// 一级单选，二级多选
+const change = (val) => {
+  for (var i = 0; i < val.length; i++) {
+    if (val[i][0] !== shareScope.value) {
+      shareScope.value = val[i][0]
+      break
+    }
+  }
+  const filterd = val.filter((v) => v[0] === shareScope.value)
+  casValue.value = []
+  casValue.value.push(...filterd)
+}
+// 一级多选，二级单选
+const change1 = (val) => {
+  // 如果是清空操作，直接返回
+  if (!val || val.length === 0) {
+    casValue.value = []
+    shareScope.value = '-1'
+    return
+  }
+
+  // 获取最新操作的一级选项
+  const latestParent = val[val.length - 1][0]
+
+  // 如果最新操作的一级选项与当前不同，更新shareScope
+  if (latestParent !== shareScope.value) {
+    shareScope.value = latestParent
+  }
+
+  // 构建最终选择结果：
+  // 1. 保留所有不同一级选项的完整选择
+  // 2. 对于当前操作的一级选项，只保留最新的二级选择
+  const finalSelections = val.filter((path) => {
+    // 如果是当前操作的一级选项，只保留最新选择的二级选项
+    if (path[0] === latestParent) {
+      return path === val[val.length - 1]
+    }
+    // 保留其他一级选项的所有选择
+    return true
+  })
+
+  // 更新选择结果
+  casValue.value = finalSelections
+}
 const time = ref('')
 const cascaderValue = ref({
   items: [],
